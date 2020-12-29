@@ -1,0 +1,30 @@
+# frozen_string_literal: true
+
+require 'discordrb'
+
+# Implements the bot's about command.
+module Info
+  extend Discordrb::Commands::CommandContainer
+
+  command :info, { description: 'Show information about the bot', aliases: [:about] } \
+  do |event|
+    event.message.channel.send_embed do |embed|
+      embed.title = 'Forumlancer'
+      embed.description = 'Providing [DiscoveryGC](https://discoverygc.com/forums/portal.php) ' \
+                          'forum notifications in your server'
+      embed.thumbnail = event.bot.avatar
+      embed.colour = event.bot.colour
+      embed.add_field(name: 'Source code',
+                      value: '[biqqles/forumlancer](https://github.com/biqqles/forumlancer)',
+                      inline: true)
+      embed.add_field(name: 'Licensed under',
+                      value: '[AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html)',
+                      inline: true)
+      embed.add_field(name: 'Deployed commit',
+                      value: "[#{COMMIT}](https://github.com/biqqles/forumlancer/commit/#{COMMIT})",
+                      inline: true)
+    end
+  end
+
+  COMMIT = `git rev-parse --short HEAD`.freeze
+end
