@@ -19,7 +19,7 @@ module Emoticons
   end
 
   def self.create_emoji_mapping(bot)
-    emojis = bot.servers[bot.home].emoji
+    emojis = bot.home.emoji
     emoji_map = emojis.values.to_h { |e| [e.name, e] }
     emoji_map.tap do |map|
       # create any aliases

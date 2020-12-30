@@ -3,7 +3,6 @@
 require 'discordrb'
 
 require_relative 'secrets'
-require_relative 'storage'
 require_relative 'bot/extensions'
 require_relative 'bot/commands/exclude'
 require_relative 'bot/commands/info'
@@ -21,15 +20,18 @@ module Bot
       super token: Secrets::TOKEN, client_id: Secrets::TOKEN, prefix: 'f/'
       run true
       self.watching = 'the forums. f/help'
-      servers.values { |s| Storage.ensure_config_ready(s.id) }
     end
 
+    # The bot's theme colour.
+    # @return [Integer]
     def colour
       COLOUR
     end
 
+    # The bot's home server.
+    # @return [Discordrb::Server]
     def home
-      HOME_SERVER
+      servers[HOME_SERVER]
     end
   end
 
