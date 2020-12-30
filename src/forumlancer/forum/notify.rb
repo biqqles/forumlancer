@@ -7,17 +7,11 @@ require 'set'
 require_relative '../storage'
 require_relative 'scanner'
 
-Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
+Notification = Struct.new(:channel_id, :thread, :matched) do
   # Emit this notification as an embed in the nominated server and channel.
   # @param bot [Discordrb::Bot] The bot to emit with.
   def emit(bot)
-    server = bot.servers[server_id]
-    raise "Bot not in server #{server_id}" unless server
-
-    excluded = Storage::SERVERS.transaction { Storage::SERVERS[server_id][:excluded] }
-    return if excluded.include? thread.last_user
-
-    server.channel_map[channel_id].send_embed do |embed|
+    bot.channel(channel_id).send_embed do |embed|
       embed.title = ":envelope:  You've got mail"
       embed.description = "New post in ***#{thread.markdown}***\nby **#{thread.last_user.markdown}**"
       embed.colour = bot.colour
@@ -56,12 +50,13 @@ def create_notifications(matching, server_configs)
 
   notifications = Set[] # TODO: possibly a way to simplify this block
   Storage::NOTIFICATIONS.transaction do
-    server_configs.map do |server_id, config|
+    server_configs.each do |server_id, config|
       config[:watchlist].each do |term|
         matches[term].each do |thread|
-          notification = Notification.new(server_id, config[:channel], thread, term)
-          notifications.add(notification) if  # ignore if already sent to this server
-            Storage::NOTIFICATIONS[:past].add?([server_id, thread.full_url, thread.last_active])
+          notification = Notification.new(config[:channel], thread, term)
+          notifications.add(notification) if # ignore if already sent to this server
+            Storage::NOTIFICATIONS[:past].add?([server_id, thread.full_url, thread.last_active]) &&
+            !config[:excluded].include?(thread.last_user.full_url) # or if user is excluded
         end
       end
     end

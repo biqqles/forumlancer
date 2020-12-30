@@ -3,7 +3,6 @@
 require 'discordrb'
 
 require_relative 'secrets'
-require_relative 'bot/extensions'
 require_relative 'bot/commands/exclude'
 require_relative 'bot/commands/info'
 require_relative 'bot/commands/init'
@@ -32,6 +31,12 @@ module Bot
     # @return [Discordrb::Server]
     def home
       servers[HOME_SERVER]
+    end
+
+    # The bot's avatar image.
+    # @return [Discordrb::Webhooks::EmbedImage]
+    def avatar
+      Discordrb::Webhooks::EmbedImage.new url: profile.avatar_url
     end
   end
 
