@@ -15,9 +15,9 @@ Notification = Struct.new(:channel_id, :thread, :matched) do
       embed.title = ":envelope:  You've got mail"
       embed.description = "New post in ***#{thread.markdown}***\nby **#{thread.last_user.markdown}**"
       embed.colour = bot.colour
-      embed.add_field(name: 'Subforum', value: thread.subforum.markdown)
+      embed.add_field(name: 'In subforum', value: thread.subforum.markdown)
       embed.add_field(name: 'Started by', value: thread.started_by.markdown)
-      embed.add_field(name: 'Matched watchword', value: matched.inspect)
+      embed.add_field(name: 'Matched term', value: matched.inspect)
       embed.timestamp = thread.last_active
     end
   end
