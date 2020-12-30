@@ -50,12 +50,15 @@ GEM
       websocket
 
 PLATFORMS
-  x86_64-linux
+  ruby
 
 DEPENDENCIES
   discordrb
   nokogiri
   rufus-scheduler
 
+RUBY VERSION
+   ruby 2.6.6p146
+
 BUNDLED WITH
-   2.2.3
+   1.17.2
