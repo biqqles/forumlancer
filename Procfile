@@ -1,1 +1,1 @@
-web: bundle exec ruby src/forumlancer.rb
+worker: bundle exec ruby src/forumlancer.rb
