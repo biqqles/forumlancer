@@ -32,12 +32,12 @@ end
 # Create and emit notifications for all servers the bot is in.
 # @param bot [Discordrb::Bot] The bot to emit with.
 def notify(bot)
-  configs = bot.servers.values.to_h do |s|
+  configs = bot.servers.transform_values do |s|
     Storage.ensure_config_ready(s.id)
     # filter configs for servers the bot is in and has been initialised in
     config = Storage::SERVERS.transaction { Storage::SERVERS[s.id] }
-    [s.id, config] unless config[:channel].nil?
-  end
+    config unless config[:channel].nil?
+  end.compact
 
   all_terms = configs.values.map { |c| c[:watchlist] }.to_set.flatten
 
