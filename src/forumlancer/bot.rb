@@ -7,18 +7,20 @@ require_relative 'bot/commands/exclude'
 require_relative 'bot/commands/info'
 require_relative 'bot/commands/init'
 require_relative 'bot/commands/watch'
+require_relative 'bot/check'
 require_relative 'bot/emoticons'
 
 # Forumlancer's bot.
 module Bot
   HOME_SERVER = 713_179_742_978_834_452  # Planet Gammu
   COLOUR = 0xc80f55
+  PREFIX = 'f/'
 
   class Bot < Discordrb::Commands::CommandBot
     def initialize
-      super token: Secrets::TOKEN, client_id: Secrets::TOKEN, prefix: 'f/'
+      super token: Secrets::TOKEN, client_id: Secrets::TOKEN, prefix: PREFIX
       run true
-      self.watching = 'the forums. f/help'
+      self.watching = "the forums. #{PREFIX}help"
     end
 
     # The bot's theme colour.
@@ -41,6 +43,7 @@ module Bot
   end
 
   BOT = Bot.new
+  BOT.include! Check
   BOT.include! Exclude
   BOT.include! Info
   BOT.include! Init
