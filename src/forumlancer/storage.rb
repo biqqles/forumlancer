@@ -1,13 +1,29 @@
 # frozen_string_literal: true
 
-require 'yaml/store'
 require 'set'
+require 'yaml/store'
+
+require 'redis'
 
 # Stores configuration for the application.
 module Storage
-  SERVERS = YAML::Store.new('servers.store') # used for storing per-server configuration
-  NOTIFICATIONS = YAML::Store.new('notifications.store') # used for storing past notifications. TODO: delete outdated
 
+  # A dead simple PStore implementation that hooks Store#dump to save YAML to Redis as well as a file. This is required
+  # because Heroku does not support creating persistent files. Heroku Redis is not truly persistent either but it's
+  # a lot more persistent than files are and good enough for this bot, at least to begin with.
+  class RedisStore < YAML::Store
+    REDIS = Redis.new(url: ENV['REDIS_URL'])
+    def dump(table)
+      super.tap do |dumped|
+        REDIS.set(@filename, dumped)
+      end
+    end
+  end
+
+  SERVERS = RedisStore.new('servers.store') # used for storing per-server configuration
+  NOTIFICATIONS = RedisStore.new('notifications.store') # used for storing past notifications
+
+  # initialise notifications. TODO: delete outdated
   NOTIFICATIONS.transaction do
     NOTIFICATIONS[:past] ||= Set[]
   end
