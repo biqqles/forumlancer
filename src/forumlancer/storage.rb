@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'set'
+require 'yaml'
 require 'yaml/store'
 
 require 'redis'
@@ -10,9 +11,18 @@ module Storage
 
   # A dead simple PStore implementation that hooks Store#dump to save YAML to Redis as well as a file. This is required
   # because Heroku does not support creating persistent files. Heroku Redis is not truly persistent either but it's
-  # a lot more persistent than files are and good enough for this bot, at least to begin with.
+  # a lot more persistent than files are and good enough for this bot, at least to begin with. Because this class loads
+  # and stores to both file and Redis, data should only be lost if the app Dyno and Redis VM go down simultaneously.
   class RedisStore < YAML::Store
     REDIS = Redis.new(url: ENV['REDIS_URL'])
+
+    # Try to load this store from Redis, but fall back on the usual file.
+    def load(content)
+      redis_yaml = REDIS.get(@filename)
+      redis_yaml ? YAML.load(redis_yaml) : super(content)
+    end
+
+    # Place this store in Redis, in addition to writing to the usual file.
     def dump(table)
       super.tap do |dumped|
         REDIS.set(@filename, dumped)
