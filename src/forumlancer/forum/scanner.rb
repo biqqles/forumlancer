@@ -23,13 +23,7 @@ FORUM_PORTAL = 'https://discoverygc.com/forums/portal.php'
 def fetch_recent_threads
   doc = fetch_url(FORUM_PORTAL)
   latest_threads = doc.css('.latestthreads_portal')
-  latest_threads.map do |latest|
-    thread = latest.at('strong').at('a') # retaining "action=lastpost" is intentional
-    metadata = latest.at('span')
-    user = metadata.at('a')
-    time = Time.strptime(metadata.at('span')['title'], '%m-%d-%Y, %I:%M %p')
-    ForumThread.new(thread['href'], thread.text, ForumUser.new(user['href'], user.text), time)
-  end
+  latest_threads.map { |p| ForumThread.from_portal(p) }
 end
 
 # Fetch threads that match the given terms.

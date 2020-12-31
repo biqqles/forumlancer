@@ -46,6 +46,25 @@ end
 ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
   include ForumObject
 
+  # Alternative constructor from a ".latestthreads_portal" div.
+  # @param portal [Nokogiri::XML::Element] The ".latestthreads_portal" element.
+  # @return [ForumThread] The new ForumThread struct.
+  def self.from_portal(portal)
+    thread = portal.at('strong').at('a') # retaining "action=lastpost" is intentional
+
+    metadata = portal.at('span')
+    user = metadata.at('a')
+
+    # a different time format is used for posts that were made before the current day
+    time = metadata.at('span')['title'].tap do |t|
+      Time.strptime(t, '%m-%d-%Y, %I:%M %p')
+    rescue ArgumentError
+      Time.strptime(t, '%m-%d-%Y')
+    end
+
+    ForumThread.new(thread['href'], thread.text, ForumUser.new(user['href'], user.text), time)
+  end
+
   # The archive URL for this thread. Used for quickly getting its title.
   # @return [String]
   def archive_url
