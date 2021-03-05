@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.6.6'  # Heroku
+ruby '2.7.1'
 
 gem 'discordrb'
 gem 'nokogiri'
