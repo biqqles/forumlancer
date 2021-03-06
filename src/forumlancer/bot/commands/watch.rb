@@ -30,7 +30,7 @@ module Watch
       break event.channel.send_message('_Missing argument_: `term`') if term.nil?
       break event.channel.send_message("_Wasn't watching for_ #{term.inspect}!") unless watchlist.include? term
 
-      watchlist.remove term
+      watchlist.delete term
       event.channel.send_message("_OK, no longer watching for_ #{term.inspect}.")
     end
   end
