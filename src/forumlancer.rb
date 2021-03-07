@@ -9,7 +9,7 @@ require_relative 'forumlancer/forum/notify'
 # Main module for the program.
 module Forumlancer
   scheduler = Rufus::Scheduler.new
-  scheduler.every '5m' do
+  scheduler.every '1m' do
     puts 'Checking notifications'
     notify Bot::BOT
   end
