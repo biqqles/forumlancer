@@ -43,7 +43,7 @@ module Bot
   end
 
   BOT = Bot.new
-  # BOT.include! Check  # disabled until I think of a better way to do this
+  BOT.include! Check  # disabled until I think of a better way to do this
   BOT.include! Exclude
   BOT.include! Info
   BOT.include! Init
