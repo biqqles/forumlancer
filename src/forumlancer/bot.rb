@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'logger'
-
 require 'discordrb'
 
 require_relative 'secrets'
@@ -17,8 +15,6 @@ module Bot
   HOME_SERVER = 713_179_742_978_834_452  # Planet Gammu
   COLOUR = 0xc80f55
   PREFIX = 'f/'
-
-  LOGGER = Logger.new(STDOUT)
 
   class Bot < Discordrb::Commands::CommandBot
     def initialize
@@ -55,7 +51,7 @@ module Bot
   BOT.include! Watch
 
   def self.start
-    LOGGER.info('Starting bot')
+    puts 'Starting bot'
     BOT.join
   end
 end
