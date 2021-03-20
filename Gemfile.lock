@@ -27,14 +27,13 @@ GEM
     mime-types-data (3.2021.0225)
     mini_portile2 (2.5.0)
     netrc (0.11.0)
-    nokogiri (1.11.1)
+    nokogiri (1.11.2)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     opus-ruby (1.0.1)
       ffi
     raabro (1.4.0)
     racc (1.5.2)
-    redis (4.2.5)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -58,7 +57,6 @@ PLATFORMS
 DEPENDENCIES
   discordrb
   nokogiri
-  redis
   rufus-scheduler
 
 RUBY VERSION
