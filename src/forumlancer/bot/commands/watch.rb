@@ -42,7 +42,7 @@ module Watch
 
     watchlist = Storage::SERVERS.transaction { Storage::SERVERS[event.server.id][:watchlist] }
 
-    break event.channel.send_message('_Watchlist empty._') if watchlist.empty?
+    break event.channel.send_message('_Watchlist empty._') if watchlist.nil? || watchlist.empty?
 
     watchlist_contents = watchlist.map(&:inspect) * ', '
     event.channel.send_message("_Currently watching for:_ #{watchlist_contents}.")
