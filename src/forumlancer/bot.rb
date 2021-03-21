@@ -15,7 +15,7 @@ require_relative 'bot/emoticons'
 module Bot
   include EasyLogging
 
-  HOME_SERVER = 713_179_742_978_834_452  # Planet Gammu
+  HOME_SERVER = 713_179_742_978_834_452 # Planet Gammu
   COLOUR = 0xc80f55
   PREFIX = 'f/'
 

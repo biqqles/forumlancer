@@ -5,7 +5,6 @@ require 'yaml/store'
 
 # Stores configuration for the application.
 module Storage
-
   SERVERS = YAML::Store.new('servers.store') # used for storing per-server configuration
   NOTIFICATIONS = YAML::Store.new('notifications.store') # used for storing past notifications
 
