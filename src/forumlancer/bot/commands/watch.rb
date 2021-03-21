@@ -37,10 +37,12 @@ module Watch
 
   command :watchlist, { description: 'Show the current watchlist' } do |event|
     Storage.ensure_config_ready(event.server.id)
-    Storage::SERVERS.transaction do
-      watchlist = Storage::SERVERS[event.server.id][:watchlist]
+    watchlist = Storage::SERVERS.transaction { Storage::SERVERS[event.server.id][:watchlist] }
 
-      event.channel.send_message("_Currently watching for:_ #{watchlist.to_a.inspect}.")
-    end
+    break event.channel.send_message('_Watchlist empty._') if watchlist.empty?
+
+    watchlist_contents = watchlist.map {_1.inspect} * ', '
+
+    event.channel.send_message("_Currently watching for:_ #{watchlist_contents}.")
   end
 end
