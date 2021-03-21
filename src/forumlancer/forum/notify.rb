@@ -11,7 +11,7 @@ Notification = Struct.new(:channel_id, :thread, :matched) do
   # Emit this notification as an embed in the nominated server and channel.
   # @param bot [Discordrb::Bot] The bot to emit with.
   def emit(bot)
-    bot.channel(channel_id).send_embed do |embed|
+    bot.channel(channel_id)&.send_embed do |embed|
       embed.title = ":envelope:  You've got mail"
       embed.description = "New post in ***#{thread.markdown}***\nby **#{thread.last_user.markdown}**"
       embed.colour = bot.colour
