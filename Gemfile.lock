@@ -12,6 +12,7 @@ GEM
       rest-client (>= 2.1.0.rc1)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    easy_logging (0.4.0)
     et-orbi (1.2.4)
       tzinfo
     event_emitter (0.2.6)
@@ -56,6 +57,7 @@ PLATFORMS
 
 DEPENDENCIES
   discordrb
+  easy_logging
   nokogiri
   rufus-scheduler
 

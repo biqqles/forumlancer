@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'discordrb'
+require 'easy_logging'
 
 require_relative 'secrets'
 require_relative 'bot/commands/exclude'
@@ -12,6 +13,8 @@ require_relative 'bot/emoticons'
 
 # Forumlancer's bot.
 module Bot
+  include EasyLogging
+
   HOME_SERVER = 713_179_742_978_834_452  # Planet Gammu
   COLOUR = 0xc80f55
   PREFIX = 'f/'
@@ -51,7 +54,7 @@ module Bot
   BOT.include! Watch
 
   def self.start
-    puts 'Starting bot'
+    logger.info 'Starting bot'
     BOT.join
   end
 end
