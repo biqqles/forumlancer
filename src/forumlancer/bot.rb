@@ -8,7 +8,7 @@ require_relative 'bot/commands/exclude'
 require_relative 'bot/commands/info'
 require_relative 'bot/commands/init'
 require_relative 'bot/commands/watch'
-require_relative 'bot/check'
+require_relative 'bot/logging'
 require_relative 'bot/emoticons'
 
 # Forumlancer's bot.
@@ -46,7 +46,7 @@ module Bot
   end
 
   BOT = Bot.new
-  BOT.include! Check  # disabled until I think of a better way to do this
+  BOT.include! Logging
   BOT.include! Exclude
   BOT.include! Info
   BOT.include! Init

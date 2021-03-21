@@ -17,12 +17,15 @@ module Storage
   # Ensure that the server configuration for the given server has been set up for the latest schema.
   # This method MUST be called before transactions with SERVER.
   # @param server_id [Integer] The server ID to set up config for.
+  # @return [Boolean] Whether the bot has been fully initialised and is ready to send notifications.
   def self.ensure_config_ready(server_id)
+    channel = nil
     SERVERS.transaction do
       SERVERS[server_id] ||= {}
-      SERVERS[server_id][:channel] ||= nil  # redundant, but helps document the hash's keys
+      channel = SERVERS[server_id][:channel] ||= nil  # redundant, but helps document the hash's keys
       SERVERS[server_id][:watchlist] ||= Set[]
       SERVERS[server_id][:excluded] ||= Set[]
     end
+    !channel.nil?
   end
 end

@@ -9,7 +9,8 @@ module Watch
   # Add a new watchword. Watchwords are case sensitive.
   command :watch, { description: 'Get notifications for threads with titles including this term' } \
   do |event, term|
-    Storage.ensure_config_ready(event.server.id)
+    break unless assert_initialised(event)
+
     Storage::SERVERS.transaction do
       watchlist = Storage::SERVERS[event.server.id][:watchlist]
 
@@ -24,6 +25,7 @@ module Watch
   command :unwatch, { description: 'No longer get notifications for threads including this term' } \
   do |event, term|
     Storage.ensure_config_ready(event.server.id)
+
     Storage::SERVERS.transaction do
       watchlist = Storage::SERVERS[event.server.id][:watchlist]
 
@@ -36,13 +38,25 @@ module Watch
   end
 
   command :watchlist, { description: 'Show the current watchlist' } do |event|
-    Storage.ensure_config_ready(event.server.id)
+    break unless assert_initialised(event)
+
     watchlist = Storage::SERVERS.transaction { Storage::SERVERS[event.server.id][:watchlist] }
 
     break event.channel.send_message('_Watchlist empty._') if watchlist.empty?
 
-    watchlist_contents = watchlist.map {_1.inspect} * ', '
-
+    watchlist_contents = watchlist.map(&:inspect) * ', '
     event.channel.send_message("_Currently watching for:_ #{watchlist_contents}.")
+  end
+
+  # Assert that the bot is initialised and the server is ready to receive notifications.
+  # @param event [Discordrb::Event] The event that triggered this check.
+  # @return [Boolean] Whether the bot has been fully initialised.
+  def self.assert_initialised(event)
+    initialised = Storage.ensure_config_ready(event.server.id)
+    unless initialised
+      event.message.channel.send_message ":stop_sign: _Until I'm initialised you won't get notifications! " \
+                                         'Run `f/init`._'
+    end
+    initialised
   end
 end
