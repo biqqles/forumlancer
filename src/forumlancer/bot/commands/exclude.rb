@@ -14,8 +14,8 @@ module Exclude
     Storage::SERVERS.transaction do
       excluded = Storage::SERVERS[event.server.id][:excluded]
 
-      break event.channel.send_message('Missing argument: `profile_url`') if profile_url.nil?
-      break event.channel.send_message("_Already excluded: #{profile_url}!") if excluded.include? profile_url
+      break event.channel.send_message('_Missing argument:_ `profile_url`') if profile_url.nil?
+      break event.channel.send_message("_Already excluded:_ #{profile_url}!") if excluded.include? profile_url
 
       excluded.add profile_url
       event.channel.send_message("_OK, excluding posts by_ #{profile_url}.")
@@ -29,8 +29,8 @@ module Exclude
     Storage::SERVERS.transaction do
       excluded = Storage::SERVERS[event.server.id][:excluded]
 
-      break event.channel.send_message('Missing argument: `profile_url`') if profile_url.nil?
-      break event.channel.send_message("Hadn't excluded: #{profile_url}!") unless excluded.include? profile_url
+      break event.channel.send_message('_Missing argument:_ `profile_url`') if profile_url.nil?
+      break event.channel.send_message("_Hadn't excluded:_ #{profile_url}!") unless excluded.include? profile_url
 
       excluded.remove profile_url
       event.channel.send_message("_OK, no longer excluding posts by_ #{profile_url}.")
