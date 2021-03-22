@@ -1,6 +1,6 @@
 # Forumlancer
 
-**Forumlancer** is a Discord bot that provides notifications for activity on the DiscoveryGC forums.
+**Forumlancer** is a Discord bot that provides notifications for activity on the [DiscoveryGC forums](https://discoverygc.com/forums/portal.php).
 
 ### Purpose
 
@@ -44,5 +44,4 @@ I currently run Forumlancer on a Raspberry Pi 4. To host it yourself,
  - [create a bot user](https://discord.com/developers/applications)
  - set the environment variable `TOKEN` to your bot's token
  - set the environment variable `CLIENT` to your application's client ID
- - run `bundle` to install the dependencies
- - run `ruby src/forumlancer.rb` to start the bot
+ - run `bundle exec ruby src/forumlancer.rb` to start the bot
