@@ -7,10 +7,12 @@ require 'set'
 require_relative '../storage'
 require_relative 'scanner'
 
-Notification = Struct.new(:channel_id, :thread, :matched) do
+Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
   # Emit this notification as an embed in the nominated server and channel.
   # @param bot [Discordrb::Bot] The bot to emit with.
   def emit(bot)
+    return unless should_emit?
+
     bot.channel(channel_id)&.send_embed do |embed|
       embed.title = ":envelope:  You've got mail"
       embed.description = "New post in ***#{thread.markdown}***\nby **#{thread.last_user.markdown}**"
@@ -20,6 +22,32 @@ Notification = Struct.new(:channel_id, :thread, :matched) do
       embed.add_field(name: 'Matched term', value: matched.inspect)
       embed.timestamp = thread.last_active
     end
+
+    record_emission
+  end
+
+  # Whether this notification needs to be emitted.
+  # @return [Boolean]
+  def should_emit?
+    server_config = Storage::SERVERS.transaction { Storage::SERVERS[server_id] }
+    return false if server_config[:excluded].include?(thread.last_user.full_url)
+
+    past_notifications = Storage::NOTIFICATIONS.transaction { Storage::NOTIFICATIONS[:past] }
+    return false if past_notifications&.include?(to_a)
+
+    true
+  end
+
+  # Record the successful emission of this notification.
+  def record_emission
+    Storage::NOTIFICATIONS.transaction do
+      Storage::NOTIFICATIONS[:past].add to_a
+    end
+  end
+
+  # Represent this notification as a uniquely-identifying array.
+  def to_a
+    [server_id, thread.full_url, thread.last_active]
   end
 end
 
@@ -48,16 +76,11 @@ end
 def create_notifications(matching, server_configs)
   matches = fetch_matching_threads(matching)
 
-  notifications = Set[] # TODO: possibly a way to simplify this block
-  Storage::NOTIFICATIONS.transaction do
-    server_configs.each do |server_id, config|
-      config[:watchlist].each do |term|
-        matches[term].each do |thread|
-          notification = Notification.new(config[:channel], thread, term)
-          notifications.add(notification) if # ignore if already sent to this server
-            Storage::NOTIFICATIONS[:past].add?([server_id, thread.full_url, thread.last_active]) &&
-            !config[:excluded].include?(thread.last_user.full_url) # or if user is excluded
-        end
+  notifications = Set[]
+  server_configs.map do |server_id, config|
+    config[:watchlist].each do |term|
+      matches[term].each do |thread|
+        notifications.add Notification.new(server_id, config[:channel], thread, term)
       end
     end
   end
