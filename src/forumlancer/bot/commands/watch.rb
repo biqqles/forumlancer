@@ -44,7 +44,7 @@ module Watch
 
     break event.channel.send_message('_Watchlist empty._') if watchlist.nil? || watchlist.empty?
 
-    watchlist_contents = watchlist.map(&:inspect) * ', '
+    watchlist_contents = watchlist.sort.map(&:inspect) * ', '
     event.channel.send_message("_Currently watching for:_ #{watchlist_contents}.")
   end
 
