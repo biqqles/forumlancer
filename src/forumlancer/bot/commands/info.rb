@@ -2,6 +2,8 @@
 
 require 'discordrb'
 
+require_relative '../../forum/scanner'
+
 # Implements the bot's about command.
 module Info
   extend Discordrb::Commands::CommandContainer
@@ -10,8 +12,7 @@ module Info
   do |event|
     event.message.channel.send_embed do |embed|
       embed.title = 'Forumlancer'
-      embed.description = 'Providing [DiscoveryGC](https://discoverygc.com/forums/portal.php) ' \
-                          'forum notifications in your server'
+      embed.description = "Providing [DiscoveryGC](#{FORUM_PORTAL}) forum notifications in your server"
       embed.thumbnail = event.bot.avatar
       embed.colour = event.bot.colour
       embed.add_field(name: 'Source code',
