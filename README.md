@@ -34,7 +34,7 @@ As a bonus/Easter egg/irritation, Forumlancer will also respond to many Skype em
 
 Rather than scraping the entire contents of the site, Forumlancer periodically scans the "latest threads" sidebar on the forum [homepage](https://discoverygc.com/forums/portal.php). I chose this method because it's [quick and easy](https://youtu.be/HjVRLxMeoUk), but also out of consideration for the number of requests made to the web server. An [RSS feed](https://discoverygc.com/forums/syndication.php) for the forum exists, and this would be best of all if not for its posts lagging the actual forum activity by a few hours for some reason.
 
-Forumlancer is written in Ruby and uses the excellent [Discordrb](https://github.com/discordrb/discordrb), [Nokogiri](https://github.com/sparklemotion/nokogiri) and [rufus-scheduler](https://github.com/jmettraux/rufus-scheduler). All of Forumlancer's code is licensed under the [GNU AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html).
+Forumlancer is written in Ruby and uses the excellent [Discordrb](https://github.com/shardlab/discordrb), [Nokogiri](https://github.com/sparklemotion/nokogiri) and [rufus-scheduler](https://github.com/jmettraux/rufus-scheduler). All of Forumlancer's code is licensed under the [GNU AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html).
 
 
 ### Hosting
