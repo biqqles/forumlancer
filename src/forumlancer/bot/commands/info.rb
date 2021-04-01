@@ -27,5 +27,5 @@ module Info
     end
   end
 
-  COMMIT = (ENV['HEROKU_SLUG_COMMIT'] || `git rev-parse HEAD`).slice(0..6).freeze
+  COMMIT = `git rev-parse --short HEAD`.freeze
 end
