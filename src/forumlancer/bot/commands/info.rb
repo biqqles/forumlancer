@@ -16,16 +16,17 @@ module Info
       embed.thumbnail = event.bot.avatar
       embed.colour = event.bot.colour
       embed.add_field(name: 'Source code',
-                      value: '[biqqles/forumlancer](https://github.com/biqqles/forumlancer)',
+                      value: "[biqqles/forumlancer](#{REPO})",
                       inline: true)
       embed.add_field(name: 'Licensed under',
                       value: '[AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html)',
                       inline: true)
       embed.add_field(name: 'Deployed commit',
-                      value: "[#{COMMIT}](https://github.com/biqqles/forumlancer/commit/#{COMMIT})",
+                      value: "[#{COMMIT}](#{REPO}/commit/#{COMMIT})",
                       inline: true)
     end
   end
 
+  REPO = 'https://github.com/biqqles/forumlancer'
   COMMIT = `git rev-parse --short HEAD`.freeze
 end
