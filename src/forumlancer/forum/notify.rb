@@ -78,7 +78,7 @@ def create_notifications(matching, server_configs)
   matches = fetch_matching_threads(matching)
 
   notifications = Set[]
-  server_configs.map do |server_id, config|
+  server_configs.each do |server_id, config|
     config[:watchlist].each do |term|
       matches[term].each do |thread|
         notifications.add Notification.new(server_id, config[:channel], thread, term)
