@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
 # This file contains methods to fetch recent threads from the DiscoveryGC forums. It uses the "latest threads" sidebar.
-# There also exists an RSS feed at <https://discoverygc.com/forums/syndication.php> but it seems to be very slow to
-# update
+# There also exists an RSS feed at <https://discoverygc.com/forums/syndication.php> but it seems to be very delayed.
 # This approach is used because of a few factors:
-#   the forum activity is relatively low, so scraper outages of up to several hours will be tolerable because threads
-#   will not have dropped out of "latest threads"
+#    - The forum activity is relatively low, so scraper outages of up to several hours are
+#       tolerated because threads will not have dropped out of "latest threads"
+#    - It minimises the number of requests to the web server
+#    - It contains all the information we need in one place
 
-require 'open-uri'
-require 'pstore'
 require 'set'
-require 'time'
+require 'open-uri'
 
 require 'nokogiri'
 
