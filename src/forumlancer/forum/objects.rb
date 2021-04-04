@@ -2,6 +2,8 @@
 
 # This file defines objects for various "things" on the forum.
 
+require_relative '../marble'
+
 THREAD_ARCHIVE = 'https://discoverygc.com/forums/archive/index.php?thread-%<id>s'
 SUBFORUM_FULL = 'https://discoverygc.com/forums/forumdisplay.php?fid=%<id>s'
 
@@ -16,7 +18,7 @@ module ForumObject
   # A Markdown link to this object.
   # @return [String]
   def markdown
-    "[#{name}](#{full_url})"
+    Marble.link(name, full_url)
   end
 end
 
