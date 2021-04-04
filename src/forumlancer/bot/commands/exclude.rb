@@ -15,10 +15,13 @@ module Exclude
       excluded = Storage::SERVERS[event.server.id][:excluded]
 
       break event.channel.send_message('_Missing argument:_ `profile_url`') if profile_url.nil?
-      break event.channel.send_message("_Already excluded:_ #{profile_url}!") if excluded.include? profile_url
+
+      user = ForumUser.from_profile_url(profile_url)
+
+      break event.channel.send_message("_Already excluded: __#{user.name}__!_") if excluded.include? profile_url
 
       excluded.add profile_url
-      event.channel.send_message("_OK, excluding posts by_ #{profile_url}.")
+      event.channel.send_message("_OK, excluding posts by __#{user.name}__._")
     end
   end
 
@@ -30,10 +33,13 @@ module Exclude
       excluded = Storage::SERVERS[event.server.id][:excluded]
 
       break event.channel.send_message('_Missing argument:_ `profile_url`') if profile_url.nil?
-      break event.channel.send_message("_Hadn't excluded:_ #{profile_url}!") unless excluded.include? profile_url
 
-      excluded.remove profile_url
-      event.channel.send_message("_OK, no longer excluding posts by_ #{profile_url}.")
+      user = ForumUser.from_profile_url(profile_url)
+
+      break event.channel.send_message("_Hadn't excluded: __#{user.name}__!_") unless excluded.include? profile_url
+
+      excluded.delete profile_url
+      event.channel.send_message("_OK, no longer excluding posts by __#{user.name}__._")
     end
   end
 

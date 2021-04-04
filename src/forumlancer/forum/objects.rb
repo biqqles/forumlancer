@@ -42,6 +42,13 @@ end
 # A forum user. `full_url` is a link to their profile.
 ForumUser = Struct.new(:full_url, :name) do
   include ForumObject
+
+  def self.from_profile_url(profile_url)
+    profile = fetch_url(profile_url)
+    name = profile.css('.proname').text
+
+    ForumUser.new(profile_url, name)
+  end
 end
 
 # A thread on the forum.
