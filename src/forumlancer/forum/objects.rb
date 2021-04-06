@@ -88,12 +88,14 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
 
   # This thread's full title.
   # @return [String]
+  # noinspection RubyNilAnalysis
   def name
     short_title unless short_title.end_with? '...'
     archive_doc.at_css('#fullversion').at('a').text
   end
 
   # The user who started this thread.
+  # noinspection RubyNilAnalysis
   # @return [ForumUser]
   def started_by
     user = archive_doc.at_css('.author').at('a')
