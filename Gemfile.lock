@@ -17,12 +17,13 @@ GEM
       tzinfo
     event_emitter (0.2.6)
     ffi (1.15.0)
-    fugit (1.4.2)
+    fugit (1.4.4)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
+    marble_markdown (0.1)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2021.0225)
@@ -59,6 +60,7 @@ PLATFORMS
 DEPENDENCIES
   discordrb
   easy_logging
+  marble_markdown
   nokogiri
   pidfile
   rufus-scheduler

@@ -4,6 +4,8 @@
 
 require 'set'
 
+require 'marble'
+
 require_relative '../storage'
 require_relative 'scanner'
 
@@ -15,7 +17,7 @@ Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
 
     bot.channel(channel_id)&.send_embed do |embed|
       embed.title = ":envelope:  You've got mail"
-      embed.description = "New post in ***#{thread.markdown}***\nby **#{thread.last_user.markdown}**"
+      embed.description = "New post in #{thread.markdown.bold.italic}\nby #{thread.last_user.markdown.bold}"
       embed.colour = bot.colour
       embed.add_field(name: 'In subforum', value: thread.subforum.markdown)
       embed.add_field(name: 'Started by', value: thread.started_by.markdown)
