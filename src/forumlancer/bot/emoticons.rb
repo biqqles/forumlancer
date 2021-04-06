@@ -11,7 +11,7 @@ module Emoticons
   message start_with: '(', end_with: ')' do |event|
     emoji_name = event.message.content[1..-2] # text between brackets
     emoji = emoji_map(event.bot)[emoji_name]
-    event.message.channel.send_message(emoji.mention) if emoji
+    event.message.reply(emoji.mention) if emoji # hopefully this will send a quote-reply in future
   end
 
   def self.emoji_map(bot)
