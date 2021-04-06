@@ -11,6 +11,8 @@ require_relative 'scanner'
 
 Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
   # Emit this notification as an embed in the nominated server and channel.
+  include EasyLogging
+
   # @param bot [Discordrb::Bot] The bot to emit with.
   def emit(bot)
     return unless should_emit?
@@ -42,6 +44,8 @@ Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
 
   # Record the successful emission of this notification.
   def record_emission
+    logger.info "Emitted notification for #{thread.short_title.inspect} in #{server_id}"
+
     Storage::NOTIFICATIONS.transaction do
       Storage::NOTIFICATIONS[:past].add uid
     end
