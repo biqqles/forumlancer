@@ -5,6 +5,8 @@ require 'marble'
 
 require_relative '../../forum/scanner'
 
+using Marble
+
 # Implements the bot's about command.
 module Info
   extend Discordrb::Commands::CommandContainer

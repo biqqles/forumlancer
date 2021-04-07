@@ -12,6 +12,7 @@ require_relative 'scanner'
 Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
   # Emit this notification as an embed in the nominated server and channel.
   include EasyLogging
+  using Marble
 
   # @param bot [Discordrb::Bot] The bot to emit with.
   def emit(bot)

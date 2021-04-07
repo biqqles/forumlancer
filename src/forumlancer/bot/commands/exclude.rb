@@ -5,6 +5,8 @@ require 'marble'
 
 require_relative '../../forum/objects'
 
+using Marble
+
 # Implements the bot's exclusion-related commands.
 module Exclude
   extend Discordrb::Commands::CommandContainer

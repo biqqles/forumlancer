@@ -4,11 +4,10 @@
 
 require 'marble'
 
-THREAD_ARCHIVE = 'https://discoverygc.com/forums/archive/index.php?thread-%<id>s'
-SUBFORUM_FULL = 'https://discoverygc.com/forums/forumdisplay.php?fid=%<id>s'
-
 # Mixin for a forum object which at minimum has a URL and an ID.
 module ForumObject
+  using Marble
+
   # This object's ID.
   # @return [String]
   def id
@@ -109,3 +108,6 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
     Subforum.new(link['href'], link.text)
   end
 end
+
+THREAD_ARCHIVE = 'https://discoverygc.com/forums/archive/index.php?thread-%<id>s'
+SUBFORUM_FULL = 'https://discoverygc.com/forums/forumdisplay.php?fid=%<id>s'
