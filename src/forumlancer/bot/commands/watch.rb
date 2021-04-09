@@ -14,11 +14,11 @@ module Watch
     Storage::SERVERS.transaction do
       watchlist = Storage::SERVERS[event.server.id][:watchlist]
 
-      break event.channel.send_message('_Missing argument_: `term`') if term.nil?
-      break event.channel.send_message("_Already watching for_ #{term.inspect}!") if watchlist.include? term
+      break event.respond('_Missing argument_: `term`') if term.nil?
+      break event.respond("_Already watching for_ #{term.inspect}!") if watchlist.include? term
 
       watchlist.add term
-      event.channel.send_message("_OK, watching for_ #{term.inspect}.")
+      event.respond("_OK, watching for_ #{term.inspect}.")
     end
   end
 
@@ -29,11 +29,11 @@ module Watch
     Storage::SERVERS.transaction do
       watchlist = Storage::SERVERS[event.server.id][:watchlist]
 
-      break event.channel.send_message('_Missing argument_: `term`') if term.nil?
-      break event.channel.send_message("_Wasn't watching for_ #{term.inspect}!") unless watchlist.include? term
+      break event.respond('_Missing argument_: `term`') if term.nil?
+      break event.respond("_Wasn't watching for_ #{term.inspect}!") unless watchlist.include? term
 
       watchlist.delete term
-      event.channel.send_message("_OK, no longer watching for_ #{term.inspect}.")
+      event.respond("_OK, no longer watching for_ #{term.inspect}.")
     end
   end
 
@@ -42,10 +42,10 @@ module Watch
 
     watchlist = Storage::SERVERS.transaction { Storage::SERVERS[event.server.id][:watchlist] }
 
-    break event.channel.send_message('_Watchlist empty._') if watchlist.nil? || watchlist.empty?
+    break event.respond('_Watchlist empty._') if watchlist.nil? || watchlist.empty?
 
     watchlist_contents = watchlist.sort.map(&:inspect) * ', '
-    event.channel.send_message("_Currently watching for:_ #{watchlist_contents}.")
+    event.respond("_Currently watching for:_ #{watchlist_contents}.")
   end
 
   # Assert that the bot is initialised and the server is ready to receive notifications.
