@@ -27,4 +27,15 @@ module Storage
     end
     !channel.nil?
   end
+
+  # Fetch the configuration for each server the bot has been initialised in.
+  # @param bot [Discordrb::Bot] The bot instance whose servers to check.
+  # @return [{Integer => Hash}] A map of server ID to that server's configuration.
+  def self.all_configs(bot)
+    bot.servers.transform_values do |s|
+      ensure_config_ready(s.id)
+      config = SERVERS.transaction { SERVERS[s.id] }
+      config unless config[:channel].nil?  # filter for servers has been initialised in
+    end.compact
+  end
 end

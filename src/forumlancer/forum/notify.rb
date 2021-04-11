@@ -62,16 +62,11 @@ end
 # Create and emit notifications for all servers the bot is in.
 # @param bot [Discordrb::Bot] The bot to emit with.
 def notify(bot)
-  configs = bot.servers.transform_values do |s|
-    Storage.ensure_config_ready(s.id)
-    # filter configs for servers the bot is in and has been initialised in
-    config = Storage::SERVERS.transaction { Storage::SERVERS[s.id] }
-    config unless config[:channel].nil?
-  end.compact
-
+  configs = Storage.all_configs(bot)
   all_terms = configs.values.map { |c| c[:watchlist] }.to_set.flatten
 
-  create_notifications(all_terms, configs).each { |n| n.emit(bot) }
+  notifications = create_notifications(all_terms, configs)
+  notifications.each { |n| n.emit(bot) }
 end
 
 # Create notifications for recent threads.
