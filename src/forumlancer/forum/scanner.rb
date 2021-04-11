@@ -29,15 +29,17 @@ end
 # @param matching [Set<String>] The set of terms to match for
 # @return [{String => ForumThread}] A mapping of matched term to ForumThread.
 def fetch_matching_threads(matching)
+  pattern = Regexp.union(*matching)
   threads = fetch_recent_threads
 
   matches = Hash.new { |h, k| h[k] = [] }
-
-  threads.each do |thread|
-    title_terms = thread.name.split.to_set
-    (title_terms & matching).each { |m| matches[m] << thread }
+  matches.tap do
+    threads.each do |thread|
+      thread.name.scan(pattern).each do |match|
+        matches[match] << thread
+      end
+    end
   end
-  matches
 end
 
 # Fetch the document for the page at the given URL.
