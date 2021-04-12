@@ -19,7 +19,7 @@ Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
     return unless should_emit?
 
     bot.channel(channel_id)&.send_embed do |embed|
-      embed.title = ":envelope:  You've got mail"
+      embed.title = "✉️  You've got mail"
       embed.description = "New post in #{thread.markdown.bold.italic}\nby #{thread.last_user.markdown.bold}"
       embed.colour = bot.colour
       embed.add_field(name: 'In subforum', value: thread.subforum.markdown)
