@@ -27,7 +27,7 @@ end
 
 # Fetch threads that match the given terms.
 # @param matching [Set<String>] The set of terms to match for
-# @return [{String => ForumThread}] A mapping of matched term to ForumThread.
+# @return [{String => Array<ForumThread>}] A mapping of each term to the ForumThreads that match it.
 def fetch_matching_threads(matching)
   pattern = Regexp.union(*matching)
   threads = fetch_recent_threads
