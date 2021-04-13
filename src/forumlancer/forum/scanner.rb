@@ -32,12 +32,10 @@ def fetch_matching_threads(matching)
   pattern = Regexp.union(*matching)
   threads = fetch_recent_threads
 
-  matches = Hash.new { |h, k| h[k] = [] }
-  matches.tap do
-    threads.each do |thread|
-      thread.name.scan(pattern).each do |match|
-        matches[match] << thread
-      end
+  result = matching.to_h { |term| [term, []] }
+  threads.each_with_object(result) do |thread, matches|
+    thread.name.scan(pattern).each do |match|
+      matches[match] << thread
     end
   end
 end
