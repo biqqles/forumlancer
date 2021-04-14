@@ -15,8 +15,6 @@ require 'nokogiri'
 
 require_relative 'objects'
 
-FORUM_PORTAL = 'https://discoverygc.com/forums/portal.php'
-
 # Fetch the 20 most recently posted-to threads.
 # @return [Array<ForumThread>]
 def fetch_recent_threads
@@ -46,3 +44,5 @@ end
 def fetch_url(url)
   Nokogiri::HTML(URI.parse(url).open)
 end
+
+FORUM_PORTAL = 'https://discoverygc.com/forums/portal.php'
