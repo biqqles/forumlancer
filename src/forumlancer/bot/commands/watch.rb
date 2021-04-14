@@ -8,8 +8,10 @@ module Watch
 
   # Add a new watchword. Watchwords are case sensitive.
   command :watch, { description: 'Get notifications for threads with titles including this term' } \
-  do |event, term|
+  do |event, *terms|
     break unless assert_initialised(event)
+
+    term = terms.join ' '
 
     Storage::SERVERS.transaction do
       watchlist = Storage::SERVERS[event.server.id][:watchlist]
@@ -23,8 +25,10 @@ module Watch
   end
 
   command :unwatch, { description: 'No longer get notifications for threads including this term' } \
-  do |event, term|
+  do |event, *terms|
     Storage.ensure_config_ready(event.server.id)
+
+    term = terms.join ' '
 
     Storage::SERVERS.transaction do
       watchlist = Storage::SERVERS[event.server.id][:watchlist]
