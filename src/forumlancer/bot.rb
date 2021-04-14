@@ -4,12 +4,6 @@ require 'discordrb'
 require 'easy_logging'
 
 require_relative 'secrets'
-require_relative 'bot/commands/exclude'
-require_relative 'bot/commands/info'
-require_relative 'bot/commands/init'
-require_relative 'bot/commands/watch'
-require_relative 'bot/logging'
-require_relative 'bot/emoticons'
 
 # Forumlancer's bot.
 module Bot
@@ -45,16 +39,24 @@ module Bot
     end
   end
 
-  BOT = Bot.new
-  BOT.include! Logging
-  BOT.include! Exclude
-  BOT.include! Info
-  BOT.include! Init
-  BOT.include! Emoticons
-  BOT.include! Watch
-
   def self.start
     logger.info 'Starting bot'
     BOT.join
   end
+
+  # add commands to bot
+  require_relative 'bot/commands/exclude'
+  require_relative 'bot/commands/info'
+  require_relative 'bot/commands/init'
+  require_relative 'bot/commands/watch'
+  require_relative 'bot/logging'
+  require_relative 'bot/emoticons'
+
+  BOT = Bot.new
+  BOT.include! Emoticons
+  BOT.include! Exclude
+  BOT.include! Info
+  BOT.include! Init
+  BOT.include! Logging
+  BOT.include! Watch
 end
