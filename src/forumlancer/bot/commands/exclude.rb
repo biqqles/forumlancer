@@ -49,6 +49,6 @@ module Exclude
   command :excluded, { description: 'Show profiles that are currently excluded' } do |event|
     Storage.ensure_config_ready(event.server.id)
     excluded = Storage::SERVERS.transaction { Storage::SERVERS[event.server.id][:excluded] }
-    event.respond("_Currently excluding posts by:_ #{excluded.to_a.inspect}.")
+    event.respond("_Currently excluding posts by:_ #{excluded.sort.map(&:inspect) * ', '}.")
   end
 end
