@@ -16,7 +16,7 @@ module Watch
     Storage::SERVERS.transaction do
       watchlist = Storage::SERVERS[event.server.id][:watchlist]
 
-      break event.respond('_Missing argument_: `term`') if term.nil?
+      break event.respond('_Missing argument_: `term`') if term.empty?
       break event.respond("_Already watching for_ #{term.inspect}!") if watchlist.include? term
 
       watchlist.add term
@@ -33,7 +33,7 @@ module Watch
     Storage::SERVERS.transaction do
       watchlist = Storage::SERVERS[event.server.id][:watchlist]
 
-      break event.respond('_Missing argument_: `term`') if term.nil?
+      break event.respond('_Missing argument_: `term`') if term.empty?
       break event.respond("_Wasn't watching for_ #{term.inspect}!") unless watchlist.include? term
 
       watchlist.delete term
