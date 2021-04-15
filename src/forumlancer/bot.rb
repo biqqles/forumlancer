@@ -41,6 +41,7 @@ module Bot
 
   def self.start
     logger.info 'Starting bot'
+    logger.info "Bot in #{BOT.servers.count} servers"
     BOT.join
   end
 
