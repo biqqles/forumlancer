@@ -22,9 +22,9 @@ The bot will accept commands prefaced with `f/` - to get started, use `f/help`. 
 - `watch <term>` - get notifications for threads with titles including this term
 - `unwatch <term>` - no longer get notifications for threads including this term
 - `watchlist` - show the current watchlist
-- `exclude <profile_url>` - exclude a forum account (such as your own) from causing notifications
-- `include <profile_url>` - no longer exclude a forum account from causing notifications
-- `excluded` - show excluded forum accounts
+- `ignore <profile_url>` - exclude a forum account (such as your own) from causing notifications
+- `unignore <profile_url>` - no longer exclude a forum account from causing notifications
+- `ignored` - show ignored forum accounts
 - `info` - show information about the bot
 
 As a bonus/Easter egg/irritation, Forumlancer will also respond to many Skype emoticon names - e.g. "(bandit)" - so you can reminisce about the good old days.

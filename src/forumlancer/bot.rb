@@ -46,7 +46,7 @@ module Bot
   end
 
   # add commands to bot
-  require_relative 'bot/commands/exclude'
+  require_relative 'bot/commands/ignore'
   require_relative 'bot/commands/info'
   require_relative 'bot/commands/init'
   require_relative 'bot/commands/watch'
@@ -55,7 +55,7 @@ module Bot
 
   BOT = Bot.new
   BOT.include! Emoticons
-  BOT.include! Exclude
+  BOT.include! Ignore
   BOT.include! Info
   BOT.include! Init
   BOT.include! Logging
