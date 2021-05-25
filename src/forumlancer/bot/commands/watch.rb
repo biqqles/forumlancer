@@ -58,7 +58,7 @@ module Watch
   def self.assert_initialised(event)
     initialised = Storage.ensure_config_ready(event.server.id)
     unless initialised
-      event.message.channel.send_message ":stop_sign: _Until I'm initialised you won't get notifications! " \
+      event.respond ":stop_sign: _Until I'm initialised you won't get notifications! " \
                                          'Run `f/init`._'
     end
     initialised

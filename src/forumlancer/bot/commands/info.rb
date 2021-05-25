@@ -13,7 +13,7 @@ module Info
 
   command :info, { description: 'Show information about the bot', aliases: [:about] } \
   do |event|
-    event.message.channel.send_embed do |embed|
+    event.send_embed do |embed|
       embed.title = 'Forumlancer'
       embed.description = "Providing #{'DiscoveryGC forum'.link(FORUM_PORTAL)} notifications in your server"
       embed.thumbnail = event.bot.avatar
