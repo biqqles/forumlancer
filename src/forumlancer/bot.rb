@@ -53,7 +53,6 @@ module Bot
   require_relative 'bot/commands/ignore'
   require_relative 'bot/commands/info'
   require_relative 'bot/commands/init'
-  require_relative 'bot/commands/stats'
   require_relative 'bot/commands/watch'
   require_relative 'bot/logging'
   require_relative 'bot/emoticons'
@@ -64,6 +63,5 @@ module Bot
   BOT.include! Info
   BOT.include! Init
   BOT.include! Logging
-  BOT.include! Stats
   BOT.include! Watch
 end
