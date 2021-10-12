@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'date'
+
 require 'discordrb'
 require 'easy_logging'
 require 'pidfile'
@@ -18,13 +20,25 @@ module Forumlancer
   # prevent multiple instances from running
   @pf = PidFile.new
 
-  # start checking for notifications and redirect errors to the log
+  # schedule checking for notifications and redirect errors to the log
   scheduler = Rufus::Scheduler.new
   scheduler.every '1m' do
     logger.debug 'Checking notifications'
     notify Bot::BOT
   rescue StandardError => e
     logger.error e
+  end
+
+  # schedule deletion of old notification records
+  scheduler.every '1d' do
+    logger.info 'Deleting old notifications'
+
+    Storage::NOTIFICATIONS.transaction do
+      seven_days_ago = (Date.today - 7).to_time
+      Storage::NOTIFICATIONS[:past].delete_if do |_, _, time|
+        Time::at(time) < seven_days_ago
+      end
+    end
   end
 
   # start the bot
