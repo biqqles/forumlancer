@@ -11,7 +11,7 @@ Forumlancer allows you to automatically subscribe to threads whose titles contai
 
 ### How to use it
 
-~~Add **Forumlancer#5256** to your server using this link.~~ Currently in closed beta.
+[Add **Forumlancer#5256** to your server using this link.](https://discord.com/api/oauth2/authorize?client_id=713391469515243560&permissions=0&scope=bot)
 
 Optionally, you can create a role for Forumlancer to constrain it to the channel you want to use for notifications. The bot must be able to send messages and embeds.
 
@@ -39,7 +39,7 @@ Forumlancer is written in Ruby and uses the excellent [Discordrb](https://github
 
 ### Hosting
 
-I currently run Forumlancer on a Raspberry Pi 4. To host it yourself,
+I currently run Forumlancer on Heroku. To host it yourself,
 
  - [create a bot user](https://discord.com/developers/applications)
  - set the environment variable `TOKEN` to your bot's token
