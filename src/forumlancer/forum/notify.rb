@@ -34,10 +34,10 @@ Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
   # Whether this notification needs to be emitted.
   # @return [Boolean]
   def should_emit?
-    server_config = Storage::SERVERS.transaction { Storage::SERVERS[server_id] }
+    server_config = Storage.servers.open { |table| table[server_id] }
     return false if server_config[:excluded].include?(thread.last_user.full_url)
 
-    past_notifications = Storage::NOTIFICATIONS.transaction { Storage::NOTIFICATIONS[:past] }
+    past_notifications = Storage.notifications.open { |table| table[:past] }
     return false if past_notifications&.include?(uid)
 
     true
@@ -47,8 +47,8 @@ Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
   def record_emission
     logger.info "Emitted notification for #{thread.short_title.inspect} in #{server_id}"
 
-    Storage::NOTIFICATIONS.transaction do
-      Storage::NOTIFICATIONS[:past].add uid
+    Storage.notifications.open do |table|
+      table[:past].add uid
     end
   end
 

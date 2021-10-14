@@ -14,8 +14,8 @@ module Init
     channel = event.message.channel
 
     Storage.ensure_config_ready(server.id)
-    Storage::SERVERS.transaction do
-      Storage::SERVERS[server.id][:channel] = channel.id
+    Storage.servers.open do |table|
+      table[server.id][:channel] = channel.id
     end
     channel.send_message("_OK, I'll use #{channel.mention} for my notifications_")
   end

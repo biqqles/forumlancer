@@ -20,6 +20,10 @@ GEM
     fugit (1.4.4)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
+    geode (0.1.0)
+      pg
+      redis
+      sequel
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -34,9 +38,11 @@ GEM
       racc (~> 1.4)
     opus-ruby (1.0.1)
       ffi
+    pg (1.2.3)
     pidfile (0.3.0)
     raabro (1.4.0)
     racc (1.5.2)
+    redis (4.5.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
@@ -44,6 +50,7 @@ GEM
       netrc (~> 0.8)
     rufus-scheduler (3.7.0)
       fugit (~> 1.1, >= 1.1.6)
+    sequel (5.49.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2021.1)
@@ -62,9 +69,11 @@ PLATFORMS
 DEPENDENCIES
   discordrb
   easy_logging
+  geode (~> 0.1.0)
   marble_markdown
   nokogiri
   pidfile
+  redis (~> 4.5)
   rufus-scheduler
   tzinfo-data
 

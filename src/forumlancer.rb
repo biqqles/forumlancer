@@ -33,9 +33,9 @@ module Forumlancer
   scheduler.every '1d' do
     logger.info 'Deleting old notifications'
 
-    Storage::NOTIFICATIONS.transaction do
+    Storage.notifications.open do |table|
       seven_days_ago = (Date.today - 7).to_time
-      Storage::NOTIFICATIONS[:past].delete_if do |_, _, time|
+      table[:past].delete_if do |_, _, time|
         Time::at(time) < seven_days_ago
       end
     end

@@ -8,3 +8,7 @@ gem 'nokogiri'
 gem 'pidfile'
 gem 'rufus-scheduler'
 gem 'tzinfo-data'
+
+gem "redis", "~> 4.5"
+
+gem "geode", "~> 0.1.0"

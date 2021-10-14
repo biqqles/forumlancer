@@ -1,16 +1,26 @@
 # frozen_string_literal: true
 
 require 'set'
-require 'yaml/store'
+
+require 'geode'
 
 # Stores configuration for the application.
 module Storage
-  SERVERS = YAML::Store.new('servers.store') # used for storing per-server configuration
-  NOTIFICATIONS = YAML::Store.new('notifications.store') # used for storing past notifications
+  connection = ENV['DATABASE_URL']
+  SERVERS = Geode::PostgresStore.new 'servers', connection # used for storing per-server configuration
+  NOTIFICATIONS = Geode::PostgresStore.new 'notifications', connection # used for storing past notifications
 
-  # initialise notifications. TODO: delete outdated
-  NOTIFICATIONS.transaction do
-    NOTIFICATIONS[:past] ||= Set[]
+  # initialise notifications.
+  NOTIFICATIONS.open do |table|
+    table[:past] ||= Set[]
+  end
+
+  def self.servers
+    SERVERS
+  end
+
+  def self.notifications
+    NOTIFICATIONS
   end
 
   # Ensure that the server configuration for the given server has been set up for the latest schema.
@@ -19,11 +29,11 @@ module Storage
   # @return [Boolean] Whether the bot has been fully initialised and is ready to send notifications.
   def self.ensure_config_ready(server_id)
     channel = nil
-    SERVERS.transaction do
-      SERVERS[server_id] ||= {}
-      channel = SERVERS[server_id][:channel] ||= nil  # redundant, but helps document the hash's keys
-      SERVERS[server_id][:watchlist] ||= Set[]
-      SERVERS[server_id][:excluded] ||= Set[]
+    servers.open do |table|
+      table[server_id] ||= {}
+      channel = table[server_id][:channel] ||= nil  # redundant, but helps document the hash's keys
+      table[server_id][:watchlist] ||= Set[]
+      table[server_id][:excluded] ||= Set[]
     end
     !channel.nil?
   end
@@ -34,7 +44,7 @@ module Storage
   def self.all_configs(bot)
     bot.servers.transform_values do |s|
       ensure_config_ready(s.id)
-      config = SERVERS.transaction { SERVERS[s.id] }
+      config = servers.open { |table| table[s.id] }
       config unless config[:channel].nil?  # filter for servers has been initialised in
     end.compact
   end

@@ -13,8 +13,8 @@ module Watch
 
     term = terms.join ' '
 
-    Storage::SERVERS.transaction do
-      watchlist = Storage::SERVERS[event.server.id][:watchlist]
+    Storage.servers.open do |table|
+      watchlist = table[event.server.id][:watchlist]
 
       break event.respond('_Missing argument_: `term`') if term.empty?
       break event.respond("_Already watching for_ #{term.inspect}!") if watchlist.include? term
@@ -30,8 +30,8 @@ module Watch
 
     term = terms.join ' '
 
-    Storage::SERVERS.transaction do
-      watchlist = Storage::SERVERS[event.server.id][:watchlist]
+    Storage.servers.open do |table|
+      watchlist = table[event.server.id][:watchlist]
 
       break event.respond('_Missing argument_: `term`') if term.empty?
       break event.respond("_Wasn't watching for_ #{term.inspect}!") unless watchlist.include? term
@@ -44,7 +44,7 @@ module Watch
   command :watchlist, { description: 'Show the current watchlist' } do |event|
     break unless assert_initialised(event)
 
-    watchlist = Storage::SERVERS.transaction { Storage::SERVERS[event.server.id][:watchlist] }
+    watchlist = Storage.servers.open { |table| table[event.server.id][:watchlist] }
 
     break event.respond('_Watchlist empty._') if watchlist.nil? || watchlist.empty?
 

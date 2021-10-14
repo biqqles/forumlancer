@@ -14,8 +14,8 @@ module Ignore
   command :ignore, { description: 'Exclude a forum account from causing notifications' } \
   do |event, profile_url|
     Storage.ensure_config_ready(event.server.id)
-    Storage::SERVERS.transaction do
-      ignored = Storage::SERVERS[event.server.id][:excluded]
+    Storage.servers.open do |table|
+      ignored = table[event.server.id][:excluded]
 
       break event.respond("Missing argument: #{'profile_url'.code}.".italics) if profile_url.nil?
 
@@ -31,8 +31,8 @@ module Ignore
   command :unignore, { description: 'Allow posts from this account to cause notifications' } \
   do |event, profile_url|
     Storage.ensure_config_ready(event.server.id)
-    Storage::SERVERS.transaction do
-      ignored = Storage::SERVERS[event.server.id][:excluded]
+    Storage.servers.open do |table|
+      ignored = table[event.server.id][:excluded]
 
       break event.respond('_Missing argument:_ `profile_url`') if profile_url.nil?
 
@@ -47,7 +47,7 @@ module Ignore
 
   command :ignored, { description: 'Show profiles that are currently ignored' } do |event|
     Storage.ensure_config_ready(event.server.id)
-    ignored = Storage::SERVERS.transaction { Storage::SERVERS[event.server.id][:excluded] }
+    ignored = table.open { |table| table[event.server.id][:excluded] }
     event.respond(['Currently ignoring posts by:'.italics, *ignored.sort].join("\n"))
   end
 end
