@@ -4,7 +4,6 @@ require 'date'
 
 require 'discordrb'
 require 'easy_logging'
-require 'pidfile'
 require 'rufus-scheduler'
 
 require_relative 'forumlancer/bot'
@@ -16,9 +15,6 @@ require_relative 'forumlancer/forum/notify'
 # Main module for the program.
 module Forumlancer
   include EasyLogging
-
-  # prevent multiple instances from running
-  @pf = PidFile.new
 
   # schedule checking for notifications and redirect errors to the log
   scheduler = Rufus::Scheduler.new

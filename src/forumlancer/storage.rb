@@ -2,13 +2,13 @@
 
 require 'set'
 
-require 'geode'
+require 'geode/sequel'
 
 # Stores configuration for the application.
 module Storage
-  connection = ENV['DATABASE_URL']
-  SERVERS = Geode::PostgresStore.new 'servers', connection # used for storing per-server configuration
-  NOTIFICATIONS = Geode::PostgresStore.new 'notifications', connection # used for storing past notifications
+  connection = ENV['DATABASE_URL'] || {}
+  SERVERS = Geode::SequelStore.new :servers, *connection # used for storing per-server configuration
+  NOTIFICATIONS = Geode::SequelStore.new :notifications, *connection # used for storing past notifications
 
   # initialise notifications.
   NOTIFICATIONS.open do |table|

@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.1.9)
     discordrb (3.4.0)
       discordrb-webhooks (~> 3.3.0)
       ffi (>= 1.9.24)
@@ -13,33 +13,32 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     easy_logging (0.4.0)
-    et-orbi (1.2.4)
+    et-orbi (1.2.5)
       tzinfo
     event_emitter (0.2.6)
-    ffi (1.15.0)
-    fugit (1.4.4)
+    ffi (1.15.4)
+    fugit (1.5.2)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
-    geode (0.1.0)
-      pg
-      redis
-      sequel
+    geode (0.2.0)
+      pg (~> 1.0)
+      redis (~> 4.0)
+      sequel (~> 5.0)
     http-accept (1.7.0)
-    http-cookie (1.0.3)
+    http-cookie (1.0.4)
       domain_name (~> 0.5)
     marble_markdown (0.2)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0225)
-    mini_portile2 (2.5.0)
+    mime-types-data (3.2021.0901)
+    mini_portile2 (2.6.1)
     netrc (0.11.0)
-    nokogiri (1.11.3)
-      mini_portile2 (~> 2.5.0)
+    nokogiri (1.12.5)
+      mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     opus-ruby (1.0.1)
       ffi
     pg (1.2.3)
-    pidfile (0.3.0)
     raabro (1.4.0)
     racc (1.5.2)
     redis (4.5.0)
@@ -48,16 +47,16 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rufus-scheduler (3.7.0)
+    rufus-scheduler (3.8.0)
       fugit (~> 1.1, >= 1.1.6)
     sequel (5.49.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
-    tzinfo-data (1.2021.1)
+    tzinfo-data (1.2021.3)
       tzinfo (>= 1.0.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.7)
+    unf_ext (0.0.8)
     websocket (1.2.9)
     websocket-client-simple (0.3.0)
       event_emitter
@@ -69,11 +68,9 @@ PLATFORMS
 DEPENDENCIES
   discordrb
   easy_logging
-  geode (~> 0.1.0)
+  geode
   marble_markdown
   nokogiri
-  pidfile
-  redis (~> 4.5)
   rufus-scheduler
   tzinfo-data
 
