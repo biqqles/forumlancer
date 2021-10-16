@@ -34,10 +34,10 @@ Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
   # Whether this notification needs to be emitted.
   # @return [Boolean]
   def should_emit?
-    server_config = Storage.servers.open { |table| table[server_id] }
+    server_config = Storage.servers[server_id]
     return false if server_config[:excluded].include?(thread.last_user.full_url)
 
-    past_notifications = Storage.notifications.open { |table| table[:past] }
+    past_notifications = Storage.notifications[:past]
     return false if past_notifications&.include?(uid)
 
     true

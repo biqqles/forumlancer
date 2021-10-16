@@ -44,7 +44,7 @@ module Storage
   def self.all_configs(bot)
     bot.servers.transform_values do |s|
       ensure_config_ready(s.id)
-      config = servers.open { |table| table[s.id] }
+      config = servers[s.id]
       config unless config[:channel].nil?  # filter for servers has been initialised in
     end.compact
   end

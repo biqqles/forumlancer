@@ -44,7 +44,7 @@ module Watch
   command :watchlist, { description: 'Show the current watchlist' } do |event|
     break unless assert_initialised(event)
 
-    watchlist = Storage.servers.open { |table| table[event.server.id][:watchlist] }
+    watchlist = Storage.servers[event.server.id][:watchlist]
 
     break event.respond('_Watchlist empty._') if watchlist.nil? || watchlist.empty?
 
