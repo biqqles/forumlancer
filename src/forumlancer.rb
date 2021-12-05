@@ -32,7 +32,7 @@ module Forumlancer
     Storage.notifications.open do |table|
       seven_days_ago = (Date.today - 7).to_time
       table[:past].delete_if do |_, _, time|
-        Time::at(time) < seven_days_ago
+        Time.at(time) < seven_days_ago
       end
     end
   end
