@@ -103,7 +103,7 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
   # The subforum this thread is in.
   # @return [Subforum]
   def subforum
-    link = archive_doc.at_css('.navigation a')
+    link = archive_doc.css('.navigation a').last
     Subforum.new(link['href'], link.text)
   end
 end
