@@ -55,16 +55,15 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
   include ForumObject
 
   # Alternative constructor from a ".latestthreads_portal" div.
-  # @param portal [Nokogiri::XML::Element] The ".latestthreads_portal" element.
+  # @param portal [Oga::XML::Element] The ".latestthreads_portal" element.
   # @return [ForumThread] The new ForumThread struct.
   def self.from_portal(portal)
-    thread = portal.at('strong').at('a') # retaining "action=lastpost" is intentional
-
-    metadata = portal.at('span')
-    user = metadata.at('a')
+    thread = portal.at_css('strong a') # retaining "action=lastpost" is intentional
+    metadata = portal.at_css('span')
+    user = metadata.at_css('a')
 
     # a different time format is used for posts that were made before the current day
-    time = metadata.at('span')['title'].then do |t|
+    time = metadata.at_css('span')['title'].then do |t|
       Time.strptime(t, '%m-%d-%Y, %I:%M %p')
     rescue ArgumentError
       Time.strptime(t, '%m-%d-%Y')
@@ -80,7 +79,7 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
   end
 
   # The document for the archive of this thread. (memoized).
-  # @return [Nokogiri::HTML::Document]
+  # @return [Oga::XML::Document]
   def archive_doc
     @archive_doc ||= fetch_url(archive_url)
   end
@@ -90,21 +89,21 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
   # noinspection RubyNilAnalysis
   def name
     short_title unless short_title.end_with? '...'
-    archive_doc.at_css('#fullversion').at('a').text
+    archive_doc.at_css('#fullversion a').text
   end
 
   # The user who started this thread.
   # noinspection RubyNilAnalysis
   # @return [ForumUser]
   def started_by
-    user = archive_doc.at_css('.author').at('a')
+    user = archive_doc.at_css('.author a')
     ForumUser.new(user['href'], user.text)
   end
 
   # The subforum this thread is in.
   # @return [Subforum]
   def subforum
-    link = archive_doc.css('.navigation').search('a').last
+    link = archive_doc.at_css('.navigation a')
     Subforum.new(link['href'], link.text)
   end
 end

@@ -11,7 +11,7 @@
 require 'set'
 require 'open-uri'
 
-require 'nokogiri'
+require 'oga'
 
 require_relative 'objects'
 
@@ -40,9 +40,9 @@ end
 
 # Fetch the document for the page at the given URL.
 # @param url [String] The URL to fetch
-# @return [Nokogiri::HTML::Document] The Nokogiri document.
+# @return [Oga::XML::Document] The Oga document.
 def fetch_url(url)
-  Nokogiri::HTML(URI.parse(url).open)
+  Oga.parse_html(URI.parse(url).open)
 end
 
 FORUM_PORTAL = 'https://discoverygc.com/forums/portal.php'
