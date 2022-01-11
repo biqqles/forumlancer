@@ -34,14 +34,15 @@ As a bonus/Easter egg/irritation, Forumlancer will also respond to many Skype em
 
 Rather than scraping the entire contents of the site, Forumlancer periodically scans the "latest threads" sidebar on the forum [homepage](https://discoverygc.com/forums/portal.php). I chose this method because it's [quick and easy](https://youtu.be/HjVRLxMeoUk), but also out of consideration for the number of requests made to the web server. An [RSS feed](https://discoverygc.com/forums/syndication.php) for the forum exists, and this would be best of all if not for its posts lagging the actual forum activity by a few hours for some reason.
 
-Forumlancer is written in Ruby and uses the excellent [Discordrb](https://github.com/shardlab/discordrb), [Nokogiri](https://github.com/sparklemotion/nokogiri) and [rufus-scheduler](https://github.com/jmettraux/rufus-scheduler). All of Forumlancer's code is licensed under the [GNU AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html).
+Forumlancer is written in Ruby and uses the excellent [discordrb](https://github.com/shardlab/discordrb), [Oga](https://gitlab.com/yorickpeterse/oga) and [rufus-scheduler](https://github.com/jmettraux/rufus-scheduler), as well as my own library [geode](https://github.com/biqqles/geode). All of Forumlancer's code is licensed under the [GNU AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html).
 
 
 ### Hosting
 
-I currently run Forumlancer on Heroku. To host it yourself,
+I currently host Forumlancer (for free) on Heroku. To run it yourself,
 
- - [create a bot user](https://discord.com/developers/applications)
- - set the environment variable `TOKEN` to your bot's token
- - set the environment variable `CLIENT` to your application's client ID
- - run `bundle exec ruby src/forumlancer.rb` to start the bot
+ 1. [create a bot user](https://discord.com/developers/applications)
+    - set the environment variable `TOKEN` to your bot's token
+    - set the environment variable `CLIENT` to your application's client ID
+ 2. [start `postgres`](https://www.postgresql.org/docs/current/server-start.html)
+ 3. run `bundle exec ruby src/forumlancer.rb` to start the bot.
