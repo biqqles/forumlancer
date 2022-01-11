@@ -20,10 +20,10 @@ module Ignore
       break event.respond("Missing argument: #{'profile_url'.code}.".italics) if profile_url.nil?
 
       user = ForumUser.from_profile_url(profile_url).name.escape
+      break event.respond('Invalid profile URL!'.italics) if user.empty?
 
-      break event.respond("Already ignored: #{user.bold}!".italics) if ignored.include? profile_url
+      break event.respond("Already ignored: #{user.bold}!".italics) unless ignored.add? profile_url
 
-      ignored.add profile_url
       event.respond("OK, ignoring posts by #{user.bold}.".italics)
     end
   end
@@ -38,9 +38,8 @@ module Ignore
 
       user = ForumUser.from_profile_url(profile_url).name.escape
 
-      break event.respond("Hadn't ignored: #{user.bold}!".italics) unless ignored.include? profile_url
+      break event.respond("Hadn't ignored: #{user.bold}!".italics) unless ignored.delete? profile_url
 
-      ignored.delete profile_url
       event.respond("OK, no longer ignoring posts by #{user.bold}.".italics)
     end
   end
