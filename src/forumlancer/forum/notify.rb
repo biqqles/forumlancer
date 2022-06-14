@@ -4,6 +4,7 @@
 
 require 'set'
 
+require 'discordrb'
 require 'marble'
 
 require_relative '../storage'
@@ -66,7 +67,11 @@ def notify(bot)
   all_terms = configs.values.map { |c| c[:watchlist] }.to_set.flatten
 
   notifications = create_notifications(all_terms, configs)
-  notifications.each { |n| n.emit(bot) }
+  notifications.each do |n|
+      n.emit(bot)
+  rescue Discordrb::Errors::NoPermission
+    logger.error 'Permission denied'
+  end
 end
 
 # Create notifications for recent threads.
