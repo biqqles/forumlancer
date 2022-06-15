@@ -12,11 +12,14 @@ using Marble
 module Commands
   command :info, { description: 'Show information about the bot', aliases: [:about] } \
   do |event|
+    bot = event.bot
+
     event.send_embed do |embed|
       embed.title = 'Forumlancer'
-      embed.description = "Providing #{'DiscoveryGC forum'.link(FORUM_PORTAL)} notifications in your server"
-      embed.thumbnail = event.bot.avatar
-      embed.colour = event.bot.colour
+      embed.description = "Providing #{'DiscoveryGC forum'.link(FORUM_PORTAL)} notifications in your server \
+                          (and #{bot.servers.length - 1} others)"
+      embed.thumbnail = bot.avatar
+      embed.colour = bot.colour
       embed.add_field(name: 'Source code',
                       value: 'biqqles/forumlancer'.link(REPO),
                       inline: true)
