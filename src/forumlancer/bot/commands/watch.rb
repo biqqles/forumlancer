@@ -40,7 +40,7 @@ module Commands
     end
   end
 
-  command :watchlist, { description: 'Show the current watchlist' } do |event|
+  command :watchlist, { description: 'Show the current watchlist', aliases: [:watching] } do |event|
     break unless assert_initialised(event)
 
     watchlist = Storage.servers[event.server.id][:watchlist]
