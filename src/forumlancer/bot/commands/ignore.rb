@@ -46,6 +46,10 @@ module Commands
   command :ignored, { description: 'Show profiles that are currently ignored' } do |event|
     Storage.ensure_config_ready(event.server.id)
     ignored = Storage.servers[event.server.id][:excluded]
-    event.respond(['Currently ignoring posts by:'.italics, *ignored.sort].join("\n"))
+    if ignored.empty?
+      event.respond('Ignore list is empty.'.italics)
+    else
+      event.respond(['Currently ignoring posts by:'.italics, *ignored.sort].join("\n"))
+    end
   end
 end
