@@ -29,7 +29,7 @@ Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
     end
   end
 
-  def embed
+  def embed # rubocop:disable Metrics/AbcSize
     proc do |embed|
       embed.title = "✉️  You've got mail"
       embed.description = "New post in #{thread.markdown.bold.italic}\nby #{thread.last_user.markdown.bold}"
