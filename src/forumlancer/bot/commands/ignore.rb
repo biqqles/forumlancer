@@ -3,14 +3,13 @@
 require 'discordrb'
 require 'marble'
 
+require_relative '../commands'
 require_relative '../../forum/objects'
 
 using Marble
 
 # Implements the bot's ignore feature.
-module Ignore
-  extend Discordrb::Commands::CommandContainer
-
+module Commands
   command :ignore, { description: 'Exclude a forum account from causing notifications' } \
   do |event, profile_url|
     Storage.ensure_config_ready(event.server.id)

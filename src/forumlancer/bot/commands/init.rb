@@ -2,12 +2,11 @@
 
 require 'discordrb'
 
+require_relative '../commands'
 require_relative '../../storage'
 
 # Implements the bot's init command.
-module Init
-  extend Discordrb::Commands::CommandContainer
-
+module Commands
   command :init, { description: 'Configure the bot to use this channel for notifications' } \
   do |event|
     server = event.message.server

@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
+require_relative '../commands'
 require_relative '../../storage'
 
 # implements the bot's watchlist-related commands.
-module Watch
-  extend Discordrb::Commands::CommandContainer
-
+module Commands
   # Add a new watchword. Watchwords are case sensitive.
   command :watch, { description: 'Get notifications for threads with titles including this term' } \
   do |event, *terms|

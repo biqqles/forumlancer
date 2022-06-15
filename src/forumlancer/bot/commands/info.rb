@@ -3,14 +3,13 @@
 require 'discordrb'
 require 'marble'
 
+require_relative '../commands'
 require_relative '../../forum/scanner'
 
 using Marble
 
 # Implements the bot's about command.
-module Info
-  extend Discordrb::Commands::CommandContainer
-
+module Commands
   command :info, { description: 'Show information about the bot', aliases: [:about] } \
   do |event|
     event.send_embed do |embed|

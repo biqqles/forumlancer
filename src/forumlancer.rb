@@ -16,11 +16,12 @@ require_relative 'forumlancer/forum/notify'
 module Forumlancer
   include EasyLogging
 
+  bot = Bot.new
+
   # schedule checking for notifications and redirect errors to the log
   scheduler = Rufus::Scheduler.new
   scheduler.every '1m' do
-    logger.debug 'Checking notifications'
-    notify Bot::BOT
+    bot.emit_notifications
   rescue StandardError => e
     logger.error e
   end
@@ -38,6 +39,6 @@ module Forumlancer
   end
 
   # start the bot
-  notify Bot::BOT
-  Bot.start
+  bot.emit_notifications
+  bot.start
 end

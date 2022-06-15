@@ -31,7 +31,7 @@ module Storage
     channel = nil
     servers.open do |table|
       table[server_id] ||= {}
-      channel = table[server_id][:channel] ||= nil  # redundant, but helps document the hash's keys
+      channel = table[server_id][:channel] ||= nil # redundant, but helps document the hash's keys
       table[server_id][:watchlist] ||= Set[]
       table[server_id][:excluded] ||= Set[]
     end
