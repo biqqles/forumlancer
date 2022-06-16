@@ -16,8 +16,8 @@ module Commands
 
     event.send_embed do |embed|
       embed.title = 'Forumlancer'
-      embed.description = "Providing #{'DiscoveryGC forum'.link(FORUM_PORTAL)} notifications in your server \
-                          (and #{bot.servers.length - 1} others)"
+      embed.description = "Providing #{'DiscoveryGC forum'.link(FORUM_PORTAL)} notifications in your server" \
+                          " (and #{bot.servers.length - 1} others)"
       embed.thumbnail = bot.avatar
       embed.colour = bot.colour
       embed.add_field(name: 'Source code',
