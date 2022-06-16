@@ -25,15 +25,15 @@ end
 
 # Fetch threads that match the given terms.
 # @param matching [Set<String>] The set of terms to match for
-# @return [{String => Array<ForumThread>}] A mapping of each term to the ForumThreads that match it.
+# @return [{String => Array<ForumThread>}] A mapping of each (downcased) term to the ForumThreads that match it.
 def fetch_matching_threads(matching)
-  pattern = Regexp.union(*matching)
+  pattern = Regexp.new(Regexp.union(*matching).source, true)
   threads = fetch_recent_threads
 
-  result = matching.to_h { |term| [term, []] }
+  result = matching.to_h { |term| [term.downcase, []] }
   threads.each_with_object(result) do |thread, matches|
     thread.name.scan(pattern).each do |match|
-      matches[match] << thread
+      matches[match.downcase] << thread
     end
   end
 end

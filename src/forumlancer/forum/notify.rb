@@ -92,7 +92,7 @@ def create_notifications(matching, server_configs)
   notifications = Set[]
   server_configs.each do |server_id, config|
     config[:watchlist].each do |term|
-      matches[term].each do |thread|
+      matches[term.downcase].each do |thread|
         notifications.add Notification.new(server_id, config[:channel], thread, term)
       end
     end
