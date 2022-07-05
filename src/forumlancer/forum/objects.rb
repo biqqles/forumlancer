@@ -62,10 +62,10 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
     metadata = portal.at_css('span')
     user = metadata.at_css('a')
 
-    # a different time format is used for posts that were made before the current day
     time = metadata.at_css('span')['title'].then do |t|
       Time.strptime(t, '%m-%d-%Y, %I:%M %p')
     rescue ArgumentError
+      # a different time format is used for posts that were made over a day ago
       Time.strptime(t, '%m-%d-%Y')
     end
 
