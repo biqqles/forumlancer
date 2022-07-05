@@ -33,5 +33,5 @@ module Commands
   end
 
   REPO = 'https://github.com/biqqles/forumlancer'
-  COMMIT = (ENV['HEROKU_SLUG_COMMIT'] || `git rev-parse HEAD`).slice(0..6).freeze
+  COMMIT = (ENV['HEROKU_SLUG_COMMIT'] || `git rev-parse HEAD`)[..6].freeze
 end
