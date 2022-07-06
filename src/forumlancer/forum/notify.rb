@@ -48,9 +48,7 @@ Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
     return false if server_config[:excluded].include?(thread.last_user.full_url)
 
     past_notifications = Storage.notifications[:past]
-    return false if past_notifications&.include?(uid)
-
-    true
+    (past_notifications[uid] || 0) < thread.last_active.to_i
   end
 
   # Record the successful emission of this notification.
@@ -58,14 +56,14 @@ Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
     logger.info "Emitted notification for #{thread.short_title.inspect} in #{server_id}"
 
     Storage.notifications.open do |table|
-      table[:past].add uid
+      table[:past][uid] = thread.last_active.to_i
     end
   end
 
   # Represent this notification as a uniquely-identifying array.
-  # @return [Array(Integer, Integer, Integer)]
+  # @return [Array(Integer, Integer)]
   def uid
-    [server_id, thread.id.to_i, thread.last_active.to_i]
+    [server_id, thread.id.to_i]
   end
 end
 

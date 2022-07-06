@@ -12,7 +12,7 @@ module Storage
 
   # initialise notifications.
   NOTIFICATIONS.open do |table|
-    table[:past] ||= Set[]
+    table[:past] = {} if table[:past].is_a? Set # TODO: remove migration
   end
 
   def self.servers
