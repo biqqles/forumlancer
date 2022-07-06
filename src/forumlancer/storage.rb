@@ -6,13 +6,13 @@ require 'geode/sequel'
 
 # Stores configuration for the application.
 module Storage
-  connection = ENV['DATABASE_URL'] || {}
-  SERVERS = Geode::SequelStore.new :servers, *connection # used for storing per-server configuration
-  NOTIFICATIONS = Geode::SequelStore.new :notifications, *connection # used for storing past notifications
+  connection = ENV['DATABASE_URL']
+  SERVERS = Geode::SequelStore.new :servers, connection # used for storing per-server configuration
+  NOTIFICATIONS = Geode::SequelStore.new :notifications, connection # used for storing past notifications
 
-  # initialise notifications.
+  # initialise notifications store
   NOTIFICATIONS.open do |table|
-    table[:past] = {} if table[:past].is_a? Set # TODO: remove migration
+    table[:past] ||= {}
   end
 
   def self.servers
