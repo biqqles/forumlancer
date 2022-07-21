@@ -19,7 +19,7 @@ class Bot < Discordrb::Commands::CommandBot
   require_relative 'bot/logging'
 
   def initialize
-    super token: Secrets::TOKEN, prefix: PREFIX
+    super token: Secrets::TOKEN, prefix: PREFIX, intents: :unprivileged
 
     ready { self.watching = "the forums. #{PREFIX}help" }
 

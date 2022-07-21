@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '~> 3.0'
 
-gem 'discordrb'
+gem 'discordrb', github: 'shardlab/discordrb'
 gem 'easy_logging'
 gem 'geode'
 gem 'marble_markdown'
