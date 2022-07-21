@@ -43,6 +43,5 @@ I currently host Forumlancer (for free) on Heroku. To run it yourself,
 
  1. [create a bot user](https://discord.com/developers/applications)
     - set the environment variable `TOKEN` to your bot's token
-    - set the environment variable `CLIENT` to your application's client ID
- 2. [start `postgres`](https://www.postgresql.org/docs/current/server-start.html)
+ 2. [start postgres](https://www.postgresql.org/docs/current/server-start.html)
  3. run `bundle exec ruby src/forumlancer.rb` to start the bot.
