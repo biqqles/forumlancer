@@ -39,7 +39,7 @@ Forumlancer is written in Ruby and uses the excellent [discordrb](https://github
 
 ### Hosting
 
-I currently host Forumlancer (for free) on Heroku. To run it yourself,
+I currently host Forumlancer (for free) on Fly.io. To run it yourself,
 
  1. [create a bot user](https://discord.com/developers/applications)
     - set the environment variable `TOKEN` to your bot's token
