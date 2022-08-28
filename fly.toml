@@ -1,1 +1,4 @@
 app = "forumlancer"
+
+[build]
+  builder = "heroku/buildpacks:20"
