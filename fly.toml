@@ -1,0 +1,7 @@
+app = "forumlancer"
+
+[build]
+  builder = "heroku/buildpacks:20"
+
+[processes]
+  worker = "bundle exec ruby src/forumlancer.rb"

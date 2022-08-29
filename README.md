@@ -39,9 +39,10 @@ Forumlancer is written in Ruby and uses the excellent [discordrb](https://github
 
 ### Hosting
 
-I currently host Forumlancer (for free) on Heroku. To run it yourself,
+I currently host Forumlancer (for free) on [Fly.io](https://fly.io). To run it yourself,
 
  1. [create a bot user](https://discord.com/developers/applications)
     - set the environment variable `TOKEN` to your bot's token
  2. [start postgres](https://www.postgresql.org/docs/current/server-start.html)
- 3. run `bundle exec ruby src/forumlancer.rb` to start the bot.
+ 3. run `bundle install` to install dependencies
+ 4. run `bundle exec ruby src/forumlancer.rb` to start the bot.
