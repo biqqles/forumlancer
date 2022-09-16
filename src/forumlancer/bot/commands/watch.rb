@@ -51,6 +51,17 @@ module Commands
     event.respond("_Currently watching for:_ #{watchlist_contents}.")
   end
 
+  command :clear, { description: 'Clear the watchlist' } do |event|
+    break unless assert_initialised(event)
+
+    Storage.servers.open do |table|
+      watchlist = table[event.server.id][:watchlist]
+      watchlist.clear
+    end
+
+    event.respond('_Watchlist cleared._')
+  end
+
   # Assert that the bot is initialised and the server is ready to receive notifications.
   # @param event [Discordrb::Event] The event that triggered this check.
   # @return [Boolean] Whether the bot has been fully initialised.
