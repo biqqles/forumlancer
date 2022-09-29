@@ -45,5 +45,3 @@ end
 def fetch_url(url)
   Oga.parse_html(URI.parse(url).open)
 end
-
-FORUM_PORTAL = 'https://discoverygc.com/forums/portal.php'

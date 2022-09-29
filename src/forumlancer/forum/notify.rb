@@ -32,7 +32,9 @@ Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
   def embed # rubocop:disable Metrics/AbcSize
     proc do |embed|
       embed.title = "✉️  You've got mail"
-      embed.description = "New post in #{thread.markdown.bold.italic}\nby #{thread.last_user.markdown.bold}"
+      embed.description = "New post in #{thread.markdown.bold.italic}" \
+                          "\nby #{thread.last_user.markdown.bold}" \
+                          "\n```#{thread.last_post}```"
       embed.colour = Bot::COLOUR
       embed.timestamp = thread.last_active
       embed.add_field(name: 'In subforum', value: thread.subforum.markdown)
