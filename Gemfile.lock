@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/shardlab/discordrb.git
-  revision: 7c7865d7462a348e6a4171008322fda24634e437
+  revision: dc27fe18463da3ccfd0f0266030aa7ad51b2c2b9
   specs:
     discordrb (3.4.2)
       discordrb-webhooks (~> 3.4.2)
@@ -24,7 +24,7 @@ GEM
       tzinfo
     event_emitter (0.2.6)
     ffi (1.15.5)
-    fugit (1.5.3)
+    fugit (1.7.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
     geode (0.5.0)
@@ -40,36 +40,36 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
     netrc (0.11.0)
-    oga (3.3)
+    oga (3.4)
       ast
       ruby-ll (~> 2.1)
     opus-ruby (1.0.1)
       ffi
     parallel (1.22.1)
-    parser (3.1.2.0)
+    parser (3.1.2.1)
       ast (~> 2.4.1)
-    pg (1.4.1)
+    pg (1.4.3)
     raabro (1.4.0)
     rainbow (3.1.1)
-    redis (4.7.1)
-    regexp_parser (2.5.0)
+    redis (4.8.0)
+    regexp_parser (2.6.0)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.5)
-    rubocop (1.32.0)
+    rubocop (1.36.0)
       json (~> 2.3)
       parallel (~> 1.10)
-      parser (>= 3.1.0.0)
+      parser (>= 3.1.2.1)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.19.1, < 2.0)
+      rubocop-ast (>= 1.20.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.19.1)
+    rubocop-ast (1.21.0)
       parser (>= 3.1.1.0)
     ruby-ll (2.1.2)
       ansi
@@ -77,17 +77,17 @@ GEM
     ruby-progressbar (1.11.0)
     rufus-scheduler (3.8.2)
       fugit (~> 1.1, >= 1.1.6)
-    sequel (5.58.0)
+    sequel (5.60.1)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
-    tzinfo-data (1.2022.1)
+    tzinfo-data (1.2022.4)
       tzinfo (>= 1.0.0)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8.2)
-    unicode-display_width (2.2.0)
+    unicode-display_width (2.3.0)
     websocket (1.2.9)
-    websocket-client-simple (0.5.1)
+    websocket-client-simple (0.6.0)
       event_emitter
       websocket
 
