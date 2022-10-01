@@ -110,12 +110,14 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
   # The truncated text of the last post in this thread.
   # @return String
   def last_post(truncate: 600)
-    message = archive_doc.css('.message').last.text
+    last_page = archive_doc.css('.multipage a').last['href'] # annoying extra request
+
+    message = fetch_url(last_page).css('.message').last.text
     message.length > truncate ? "#{message[..truncate]}..." : message
   end
 end
 
 FORUM_ROOT = 'https://discoverygc.com/forums/'
 FORUM_PORTAL = "#{FORUM_ROOT}portal.php".freeze
-THREAD_ARCHIVE = "#{FORUM_ROOT}archive/index.php?thread-%<id>s-inf".freeze  # last page
+THREAD_ARCHIVE = "#{FORUM_ROOT}archive/index.php?thread-%<id>s".freeze
 SUBFORUM_FULL = "#{FORUM_ROOT}forumdisplay.php?fid=%<id>s".freeze
