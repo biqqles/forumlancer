@@ -110,9 +110,10 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
   # The truncated text of the last post in this thread.
   # @return String
   def last_post(truncate: 600)
-    last_page = archive_doc.css('.multipage a').last['href'] # annoying extra request
+    multipage = archive_doc.css('.multipage a')
+    last_page = multipage.empty? ? archive_doc : fetch_url(multipage.last['href'])
 
-    message = fetch_url(last_page).css('.message').last.text
+    message = last_page.css('.message').last.text
     message.length > truncate ? "#{message[..truncate]}..." : message
   end
 end
