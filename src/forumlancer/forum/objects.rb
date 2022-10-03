@@ -111,7 +111,11 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
   # @return String
   def last_post(truncate: 600)
     multipage = archive_doc.css('.multipage a')
-    last_page = multipage.empty? ? archive_doc : fetch_url(multipage.last['href'])
+    last_page = if multipage.empty?
+                  archive_doc
+                else
+                  fetch_url(multipage.last['href'])
+                end
 
     message = last_page.css('.message').last.text
     message.length > truncate ? "#{message[..truncate]}..." : message
