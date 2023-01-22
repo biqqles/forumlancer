@@ -11,7 +11,7 @@ require_relative '../bot'
 require_relative '../storage'
 require_relative 'scanner'
 
-Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
+Notification = Struct.new(:server_id, :channel_id, :thread, :matched, :show_preview) do
   # Emit this notification as an embed in the nominated server and channel.
   include EasyLogging
   using Marble
@@ -33,13 +33,15 @@ Notification = Struct.new(:server_id, :channel_id, :thread, :matched) do
     proc do |embed|
       embed.title = "✉️  You've got mail"
       embed.description = "New post in #{thread.markdown.bold.italic}" \
-                          "\nby #{thread.last_user.markdown.bold}" \
-                          "\n```#{thread.last_post}```"
-      embed.colour = Bot::COLOUR
-      embed.timestamp = thread.last_active
+                          "\nby #{thread.last_user.markdown.bold}"
+      embed.description += "\n```#{thread.last_post}```" if show_preview
+
       embed.add_field(name: 'In subforum', value: thread.subforum.markdown)
       embed.add_field(name: 'Started by', value: thread.started_by.markdown)
       embed.add_field(name: 'Matched term', value: matched.inspect)
+
+      embed.colour = Bot::COLOUR
+      embed.timestamp = thread.last_active
     end
   end
 
@@ -93,7 +95,8 @@ def create_notifications(matching, server_configs)
   server_configs.each do |server_id, config|
     config[:watchlist].each do |term|
       matches[term.downcase].each do |thread|
-        notifications.add Notification.new(server_id, config[:channel], thread, term)
+        notifications.add Notification.new(server_id, config[:channel], thread,
+                                           term, config[:show_preview])
       end
     end
   end

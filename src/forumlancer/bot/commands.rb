@@ -6,8 +6,8 @@ require 'discordrb'
 module Commands
   extend Discordrb::Commands::CommandContainer
 
+  require_relative 'commands/config'
   require_relative 'commands/ignore'
   require_relative 'commands/info'
-  require_relative 'commands/init'
   require_relative 'commands/watch'
 end

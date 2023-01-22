@@ -28,14 +28,16 @@ module Storage
   # @param server_id [Integer] The server ID to set up config for.
   # @return [Boolean] Whether the bot has been fully initialised and is ready to send notifications.
   def self.ensure_config_ready(server_id)
-    channel = nil
     servers.open do |table|
-      table[server_id] ||= {}
-      channel = table[server_id][:channel] ||= nil # redundant, but helps document the hash's keys
-      table[server_id][:watchlist] ||= Set[]
-      table[server_id][:excluded] ||= Set[]
+      config = table[server_id] ||= {}
+
+      config[:watchlist] ||= Set[]
+      config[:excluded] ||= Set[]
+      config[:show_preview] ||= true if config[:show_preview].nil?
+      config[:channel] ||= nil # redundant, but helps document the hash's keys
+    end.then do |channel|
+      !channel.nil?
     end
-    !channel.nil?
   end
 
   # Fetch the configuration for each server the bot has been initialised in.
