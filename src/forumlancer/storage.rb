@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'set'
-
 require 'geode/sequel'
 
 # Stores configuration for the application.

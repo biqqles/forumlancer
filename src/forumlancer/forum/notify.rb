@@ -2,8 +2,6 @@
 
 # This file contains code to send notifications based on forum events.
 
-require 'set'
-
 require 'discordrb'
 require 'marble'
 

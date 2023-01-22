@@ -8,7 +8,6 @@
 #    - It minimises the number of requests to the web server
 #    - It contains all the information we need in one place
 
-require 'set'
 require 'open-uri'
 
 require 'oga'
