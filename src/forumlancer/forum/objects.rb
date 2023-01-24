@@ -51,7 +51,7 @@ ForumUser = Struct.new(:full_url, :name) do
 end
 
 # A thread on the forum.
-ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
+ForumThread = Struct.new(:portal_url, :short_title, :last_user, :last_active) do
   include ForumObject
 
   # Alternative constructor from a ".latestthreads_portal" div.
@@ -70,6 +70,15 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
     time = Time.strptime(timestamp.strip, '%m-%d-%Y, %I:%M %p')
 
     ForumThread.new(thread['href'], thread.text, ForumUser.new(user['href'], user.text), time)
+  end
+
+  # Human-readable url.
+  def full_url
+    URI.parse(portal_url).read.base_uri
+  end
+  
+  def id
+    portal_url.delete('^0-9')
   end
 
   # The archive URL for this thread. Used for quickly getting its title.
