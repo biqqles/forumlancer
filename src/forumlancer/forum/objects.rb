@@ -22,20 +22,8 @@ module ForumObject
 end
 
 # A subforum.
-Subforum = Struct.new(:archive_url, :name) do
+Subforum = Struct.new(:full_url, :name) do
   include ForumObject
-
-  # Reimplemented
-  # @return [String]
-  def id
-    archive_url.delete('^0-9')
-  end
-
-  # The URL for the full version of this subforum.
-  # @return [String]
-  def full_url
-    format(SUBFORUM_FULL, id: id)
-  end
 end
 
 # A forum user. `full_url` is a link to their profile.
@@ -72,11 +60,15 @@ ForumThread = Struct.new(:portal_url, :short_title, :last_user, :last_active) do
     ForumThread.new(thread['href'], thread.text, ForumUser.new(user['href'], user.text), time)
   end
 
-  # Human-readable url.
+  # Human-readable url, redirected from the portal ("action=lastpost") url. (memoized.)
+  # @return [String]
   def full_url
     URI.parse(portal_url).read.base_uri.to_s
   end
 
+  # URL of threaded version of the thread, used for fetching the last post.
+  # TODO get number of posts from this
+  # @return [String]
   def threaded_url
     full_url.sub('?', '?mode=threaded&')
   end
@@ -85,16 +77,10 @@ ForumThread = Struct.new(:portal_url, :short_title, :last_user, :last_active) do
     portal_url.delete('^0-9')
   end
 
-  # The archive URL for this thread. Used for quickly getting its title.
-  # @return [String]
-  def archive_url
-    format(THREAD_ARCHIVE, id: id)
-  end
-
   # The document for the archive of this thread. (memoized).
   # @return [Oga::XML::Document]
-  def archive_doc
-    @archive_doc ||= fetch_url(archive_url)
+  def doc
+    @doc ||= fetch_url(threaded_url)
   end
 
   # This thread's full title.
@@ -102,40 +88,31 @@ ForumThread = Struct.new(:portal_url, :short_title, :last_user, :last_active) do
   # noinspection RubyNilAnalysis
   def name
     short_title unless short_title.end_with? '...'
-    archive_doc.at_css('#fullversion a').text
+    doc.at_css('title').text
   end
 
   # The user who started this thread.
   # noinspection RubyNilAnalysis
   # @return [ForumUser]
   def started_by
-    user = archive_doc.at_css('.author a')
+    user = doc.at_css('.smalltext a')
     ForumUser.new(user['href'], user.text)
   end
 
   # The subforum this thread is in.
   # @return [Subforum]
   def subforum
-    link = archive_doc.css('.navigation a').last
+    link = doc.css('.navigation a').last
     Subforum.new(link['href'], link.text)
   end
 
   # The truncated text of the last post in this thread.
   # @return String
   def last_post(truncate: 600)
-    multipage = archive_doc.css('.multipage a')
-    last_page = if multipage.empty?
-                  archive_doc
-                else
-                  fetch_url(multipage.last['href'])
-                end
-
-    message = last_page.css('.message').last.text
+    message = doc.at_css('.post_body').text
     message.length > truncate ? "#{message[..truncate]}..." : message
   end
 end
 
 FORUM_ROOT = 'https://discoverygc.com/forums/'
 FORUM_PORTAL = "#{FORUM_ROOT}portal.php".freeze
-THREAD_ARCHIVE = "#{FORUM_ROOT}archive/index.php?thread-%<id>s".freeze
-SUBFORUM_FULL = "#{FORUM_ROOT}forumdisplay.php?fid=%<id>s".freeze
