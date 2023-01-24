@@ -74,9 +74,13 @@ ForumThread = Struct.new(:portal_url, :short_title, :last_user, :last_active) do
 
   # Human-readable url.
   def full_url
-    URI.parse(portal_url).read.base_uri
+    URI.parse(portal_url).read.base_uri.to_s
   end
-  
+
+  def threaded_url
+    full_url.sub('?', '?mode=threaded&')
+  end
+
   def id
     portal_url.delete('^0-9')
   end
