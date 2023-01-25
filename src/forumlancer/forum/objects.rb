@@ -2,6 +2,7 @@
 
 # This file defines objects for various "things" on the forum.
 
+require 'http'
 require 'marble'
 
 # Mixin for a forum object which at minimum has a URL and an ID.
@@ -34,7 +35,7 @@ Subforum = Struct.new(:archive_url, :name) do
   # The URL for the full version of this subforum.
   # @return [String]
   def full_url
-    format(SUBFORUM_FULL, id: id)
+    format(SUBFORUM_FULL, id:)
   end
 end
 
@@ -51,7 +52,7 @@ ForumUser = Struct.new(:full_url, :name) do
 end
 
 # A thread on the forum.
-ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
+ForumThread = Struct.new(:portal_url, :short_title, :last_user, :last_active) do
   include ForumObject
 
   # Alternative constructor from a ".latestthreads_portal" div.
@@ -72,10 +73,20 @@ ForumThread = Struct.new(:full_url, :short_title, :last_user, :last_active) do
     ForumThread.new(thread['href'], thread.text, ForumUser.new(user['href'], user.text), time)
   end
 
+  # Reimplemented. Resolve redirect from portal url to get permalink to last post.
+  def full_url
+    FORUM_ROOT + HTTP.head(portal_url)['Location']
+  end
+
+  # Reimplemented. Use portal_url to extract thread ID.
+  def id
+    portal_url.delete('^0-9')
+  end
+
   # The archive URL for this thread. Used for quickly getting its title.
   # @return [String]
   def archive_url
-    format(THREAD_ARCHIVE, id: id)
+    format(THREAD_ARCHIVE, id:)
   end
 
   # The document for the archive of this thread. (memoized).
