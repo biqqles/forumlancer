@@ -8,12 +8,6 @@ require 'marble'
 module ForumObject
   using Marble
 
-  # This object's ID.
-  # @return [String]
-  def id
-    full_url.delete('^0-9')
-  end
-
   # A Markdown link to this object.
   # @return [String]
   def markdown
@@ -60,10 +54,16 @@ ForumThread = Struct.new(:portal_url, :short_title, :last_user, :last_active) do
     ForumThread.new(thread['href'], thread.text, ForumUser.new(user['href'], user.text), time)
   end
 
-  # Human-readable url, redirected from the portal ("action=lastpost") url. (memoized.)
+  # Human-readable url. This is where you are redirected from the portal.
   # @return [String]
   def full_url
-    URI.parse(portal_url).read.base_uri.to_s
+    doc.uri.to_s
+  end
+
+  # This thread's ID.
+  # @return [String]
+  def id
+    portal_url.delete('^0-9')
   end
 
   # URL of threaded version of the thread, used for fetching the last post.
@@ -73,14 +73,10 @@ ForumThread = Struct.new(:portal_url, :short_title, :last_user, :last_active) do
     full_url.sub('?', '?mode=threaded&')
   end
 
-  def id
-    portal_url.delete('^0-9')
-  end
-
   # The document for the archive of this thread. (memoized).
   # @return [Oga::XML::Document]
   def doc
-    @doc ||= fetch_url(threaded_url)
+    @doc ||= fetch_url(portal_url)
   end
 
   # This thread's full title.
@@ -102,14 +98,14 @@ ForumThread = Struct.new(:portal_url, :short_title, :last_user, :last_active) do
   # The subforum this thread is in.
   # @return [Subforum]
   def subforum
-    link = doc.css('.navigation a').last
+    link = doc.at_css('.navigation').css('a').last
     Subforum.new(link['href'], link.text)
   end
 
   # The truncated text of the last post in this thread.
   # @return String
   def last_post(truncate: 600)
-    message = doc.at_css('.post_body').text
+    message = doc.css('.post_body').last.strip
     message.length > truncate ? "#{message[..truncate]}..." : message
   end
 end

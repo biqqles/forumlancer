@@ -14,6 +14,11 @@ require 'oga'
 
 require_relative 'objects'
 
+# Extend Oga's Document to store the document location.
+class Oga::XML::Document
+  attr_accessor :uri
+end
+
 # Fetch the 20 most recently posted-to threads.
 # @return [Array<ForumThread>]
 def fetch_recent_threads
@@ -42,5 +47,8 @@ end
 # @param url [String] The URL to fetch
 # @return [Oga::XML::Document] The Oga document.
 def fetch_url(url)
-  Oga.parse_html(URI.parse(url).open)
+  response = URI.parse(url).open
+  Oga.parse_html(response).tap do |document|
+    document.uri = response.base_uri
+  end
 end
