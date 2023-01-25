@@ -8,8 +8,7 @@
 #    - It minimises the number of requests to the web server
 #    - It contains all the information we need in one place
 
-require 'open-uri'
-
+require 'http'
 require 'oga'
 
 require_relative 'objects'
@@ -42,5 +41,5 @@ end
 # @param url [String] The URL to fetch
 # @return [Oga::XML::Document] The Oga document.
 def fetch_url(url)
-  Oga.parse_html(URI.parse(url).open)
+  Oga.parse_html(HTTP.get(url).to_s)
 end
